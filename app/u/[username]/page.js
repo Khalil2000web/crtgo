@@ -1,24 +1,20 @@
 // app/u/[username]/page.js
-import { supabase } from '@/lib/supabase';
-import TemplateOne from '@/components/templates/TemplateOne';
-import TemplateTwo from '@/components/templates/TemplateTwo';
-import TemplateThree from '@/components/templates/TemplateThree';
+import { supabase } from "@/lib/supabase"
+import TemplateOne from "@/components/templates/TemplateOne"
 
 export default async function UserPage({ params }) {
-  const { username } = params;
 
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('template, data')
-    .eq('username', username)
-    .single();
+  const { data:user } = await supabase
+    .from("users")
+    .select("*")
+    .eq("username",params.username)
+    .single()
 
-  if (!profile) return <p>User not found</p>;
+  if(!user){
+    return <p>User not found</p>
+  }
 
-  let Template;
-  if (profile.template === 'TemplateOne') Template = TemplateOne;
-  else if (profile.template === 'TemplateTwo') Template = TemplateTwo;
-  else Template = TemplateThree;
-
-  return <Template data={profile.data} />;
+  return (
+    <TemplateOne data={user.data}/>
+  )
 }
