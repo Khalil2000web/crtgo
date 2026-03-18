@@ -5,11 +5,15 @@ import Template2 from "@/components/templates/template2"
 
 export default async function Page({ params }) {
 
+  const { restaurant } = await params
+
   const { data, error } = await supabase
     .from("restaurants")
-    .select("site_data")
-    .eq("slug", params.restaurant)
+    .select("*")
+    .eq("slug", restaurant)
     .single()
+
+  console.log(data, error)
 
   if (error || !data) {
     return <div className="p-10 text-2xl">Restaurant not found</div>
