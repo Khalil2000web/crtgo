@@ -1,0 +1,8 @@
+{
+  "name": "Pizza Palace",
+  "template": "template1",
+  "menu": [
+    { "name": "Margherita", "price": 10 },
+    { "name": "Pepperoni", "price": 12 }
+  ]
+}
