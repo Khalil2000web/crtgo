@@ -82,8 +82,8 @@ export default function MenuPage() {
         </h2>
       </header>
       
-      <div className="max-w-md bg-white shadow rounded-lg p-4">
-  <h2 className="text-xl font-semibold mb-4">Opening Hours</h2>
+      <div className="max-w-md bg-white mx-auto mt-2 md:shadow md:rounded-lg p-4">
+  <h2 className="text-xl font-semibold mb-4">ساعات العمل</h2>
   <ul className="space-y-1 text-gray-700">
     <li className="flex justify-between">
       <span>Monday</span>
