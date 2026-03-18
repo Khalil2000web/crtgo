@@ -10,7 +10,7 @@ export default function Template2({ data }) {
 
         if (section.type === "menu") {
           return (
-            <div key={i} className="mb-10">
+            <div key={i} className="bg-red-900 mb-10">
 
               <h2 className="text-3xl mb-6">
                 {section.title}
