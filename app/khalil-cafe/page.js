@@ -131,13 +131,13 @@ export default function MenuPage() {
 
       {/* Menu Sections */}
       {menuSections.map((section) => (
-        <div key={section.id} id={section.id} className="w-full py-8">
+        <div key={section.id} id={section.id} className="scroll-mt-32 w-full py-8">
           <h2 className="text-center text-[#1e394b] text-xl mb-5">{section.title}</h2>
           <div className="flex overflow-x-auto px-5 scrollbar-none">
             {section.items.map((item, idx) => (
               <div
                 key={idx}
-                className="flex-shrink-0 w-[260px] border-l border-[#1111111c] text-center cursor-pointer"
+                className="flex-shrink-0 w-[260px] border-l border-[#1111111c] last:border-l-0 text-center cursor-pointer"
                 onClick={() => openOverlay(item)}
               >
                 <div className="relative w-[200px] h-[200px] mx-auto mb-2">
@@ -160,7 +160,7 @@ export default function MenuPage() {
       ))}
 
       {/* Footer */}
-      <footer className="mt-12 border-t border-[#1111111c] text-center flex flex-col items-center justify-center py-8">
+      <footer className="mt-12 border-t border-[#1111111c] text-center flex flex-col gap-4 items-center justify-center py-8">
         <div className="flex flex-wrap justify-center gap-8 w-[90%] pb-8">
           {/* Example Social Link */}
           <Link href="#" className="text-black p-1 rounded hover:bg-black/10 transition">
