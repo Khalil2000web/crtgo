@@ -81,6 +81,40 @@ export default function MenuPage() {
           [RESTU NAME]
         </h2>
       </header>
+      
+      <div className="max-w-md bg-white shadow rounded-lg p-4">
+  <h2 className="text-xl font-semibold mb-4">Opening Hours</h2>
+  <ul className="space-y-1 text-gray-700">
+    <li className="flex justify-between">
+      <span>Monday</span>
+      <span>9:00 AM - 6:00 PM</span>
+    </li>
+    <li className="flex justify-between">
+      <span>Tuesday</span>
+      <span>9:00 AM - 6:00 PM</span>
+    </li>
+    <li className="flex justify-between">
+      <span>Wednesday</span>
+      <span>9:00 AM - 6:00 PM</span>
+    </li>
+    <li className="flex justify-between">
+      <span>Thursday</span>
+      <span>9:00 AM - 6:00 PM</span>
+    </li>
+    <li className="flex justify-between">
+      <span>Friday</span>
+      <span>9:00 AM - 6:00 PM</span>
+    </li>
+    <li className="flex justify-between">
+      <span>Saturday</span>
+      <span>10:00 AM - 4:00 PM</span>
+    </li>
+    <li className="flex justify-between">
+      <span>Sunday</span>
+      <span>Closed</span>
+    </li>
+  </ul>
+</div>
 
       {/* Section Buttons */}
       <div className="sticky top-0 z-[100000] flex flex-wrap justify-center gap-4 bg-[#fefefeb6] border-b border-[#1111111c] py-6">
