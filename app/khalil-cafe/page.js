@@ -133,7 +133,7 @@ export default function MenuPage() {
       {menuSections.map((section) => (
         <div key={section.id} id={section.id} className="w-full py-8">
           <h2 className="text-center text-[#1e394b] text-xl mb-5">{section.title}</h2>
-          <div className="flex overflow-x-auto gap-6 px-5 scrollbar-none">
+          <div className="flex overflow-x-auto px-5 scrollbar-none">
             {section.items.map((item, idx) => (
               <div
                 key={idx}
