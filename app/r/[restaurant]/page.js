@@ -1,14 +1,27 @@
-import Template1 from "@/components/templates/template1";
-import Template2 from "@/components/templates/template2";
+import fs from "fs/promises";
+import path from "path";
 import { notFound } from "next/navigation";
 
+import Template1 from "@/components/templates/template1";
+import Template2 from "@/components/templates/template2";
+
 export default async function Page({ params }) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/restaurants/${params.restaurant}.json`);
-  if (!res.ok) return notFound(); // triggers Next.js 404 if JSON missing
+  // Resolve JSON file path inside project
+  const filePath = path.join(process.cwd(), "public/restaurants", `${params.restaurant}.json`);
 
-  const data = await res.json();
+  let data;
+  try {
+    const file = await fs.readFile(filePath, "utf-8");
+    data = JSON.parse(file);
+  } catch (e) {
+    return notFound();
+  }
 
-  const templates = { template1: Template1, template2: Template2 };
+  const templates = {
+    template1: Template1,
+    template2: Template2,
+  };
+
   const Template = templates[data.template] || Template1;
 
   return <Template data={data} />;
