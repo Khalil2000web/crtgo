@@ -6,7 +6,7 @@ import Template1 from "@/components/templates/template1";
 import Template2 from "@/components/templates/template2";
 
 export default async function Page({ params }) {
-  // Resolve JSON file path inside project
+  // Make sure JSON is in /public/restaurants
   const filePath = path.join(process.cwd(), "public/restaurants", `${params.restaurant}.json`);
 
   let data;
@@ -17,11 +17,7 @@ export default async function Page({ params }) {
     return notFound();
   }
 
-  const templates = {
-    template1: Template1,
-    template2: Template2,
-  };
-
+  const templates = { template1: Template1, template2: Template2 };
   const Template = templates[data.template] || Template1;
 
   return <Template data={data} />;
