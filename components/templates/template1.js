@@ -1,11 +1,13 @@
 "use client";
 
-import { useState, useRef, Fragment } from "react";
+import { useState, useRef, Fragment, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Disclosure } from "@headlessui/react";
 import Script from "next/script";
 import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/solid";
+import { PhoneIcon } from "@heroicons/react/24/outline";
+import { FaInstagram, FaFacebook, FaTiktok } from "react-icons/fa";
 
 import { Noto_Sans_Arabic } from "next/font/google";
 
@@ -17,6 +19,13 @@ const notoArabic = Noto_Sans_Arabic({
 
 
 export default function Template1({ data }) {
+const [mounted, setMounted] = useState(false);
+
+useEffect(() => {
+  setMounted(true);
+}, []);
+
+if (!mounted) return null;
 
   // Scroll function
   const scrollToSection = (id) => {
@@ -36,70 +45,102 @@ export default function Template1({ data }) {
         <h2 className="relative z-10 text-white uppercase text-[clamp(2rem,5vw,4rem)] pb-5">{data.name}</h2>
       </header>
 
-<div className="h-[50px] flex flex-row items-center">
-  <div className="flex flex-wrap justify-center gap-8 w-[90%] mt-8">
-{data.instagram && (
-  <a 
-    href={data.instagram} 
-    target="_blank" 
-    rel="noopener noreferrer" 
-    aria-label="Instagram"
-    className="max-w-5 h-5 flex items-center justify-center cursor-pointer rounded hover:bg-black/10 transition"
-  >
-    <Image src="/images/instagram.png" width="30" height="30" alt="Instagram" className="pointer-events-none block "/>
-  </a>
-)}
 
-{data.instagram && (
-  <a 
-    href={data.instagram} 
-    target="_blank" 
-    rel="noopener noreferrer" 
-    aria-label="Instagram"
-    className="max-w-5 h-5 flex items-center justify-center cursor-pointer rounded hover:bg-black/10 transition"
-  >
-    <Image src="/images/instagram.png" width="30" height="30" alt="Instagram" className="pointer-events-none block "/>
-  </a>
-)}
+<div className="flex flex-wrap justify-center gap-3 mt-5">
 
-{data.instagram && (
-  <a 
-    href={data.instagram} 
-    target="_blank" 
-    rel="noopener noreferrer" 
-    aria-label="Instagram"
-    className="max-w-5 h-5 flex items-center justify-center cursor-pointer rounded hover:bg-black/10 transition"
-  >
-    <Image src="/images/instagram.png" width="30" height="30" alt="Instagram" className="pointer-events-none block "/>
-  </a>
-)}
+  {data.instagram && (
+    <Link
+      href={data.instagram}
+      target="_blank"
+      className="flex items-center justify-center w-9 h-9 rounded-md hover:bg-gray-50 transition"
+    >
+      <FaInstagram className="text-lg" />
+    </Link>
+  )}
 
-{data.instagram && (
-  <a 
-    href={data.instagram} 
-    target="_blank" 
-    rel="noopener noreferrer" 
-    aria-label="Instagram"
-    className="max-w-5 h-5 flex items-center justify-center cursor-pointer rounded hover:bg-black/10 transition"
-  >
-    <Image src="/images/instagram.png" width="30" height="30" alt="Instagram" className="pointer-events-none block "/>
-  </a>
-)}
+  {data.facebook && (
+    <Link
+      href={data.facebook}
+      target="_blank"
+      className="flex items-center justify-center w-9 h-9 rounded-md hover:bg-gray-50 transition"
+    >
+      <FaFacebook className="text-lg" />
+    </Link>
+  )}
 
-{data.instagram && (
-  <a 
-    href={data.instagram} 
-    target="_blank" 
-    rel="noopener noreferrer" 
-    aria-label="Instagram"
-    className="max-w-5 h-5 flex items-center justify-center cursor-pointer rounded hover:bg-black/10 transition"
-  >
-    <Image src="/images/instagram.png" width="30" height="30" alt="Instagram" className="pointer-events-none block "/>
-  </a>
-)}
-  </div>
+  {data.tiktok && (
+    <Link
+      href={data.tiktok}
+      target="_blank"
+      className="flex items-center justify-center w-9 h-9 rounded-md hover:bg-gray-50 transition"
+    >
+      <FaTiktok className="text-lg" />
+    </Link>
+  )}
+
+  {data.phone && (
+    <Link
+      href={`tel:${data.phone}`}
+      className="flex items-center justify-center w-9 h-9 rounded-md hover:bg-gray-50 transition"
+    >
+      <PhoneIcon className="text-lg" />
+    </Link>
+  )}
+
 </div>
 
+{/* <div className="flex flex-row justify-center pt-[20px]">
+<div className="flex flex-wrap justify-center gap-8 w-[90%] mt-8 h-[90px] min-h-[90px]">
+
+{data.instagram && (
+<a
+  href={data.instagram}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="w-[40px] h-[40px] flex items-center justify-center cursor-pointer rounded hover:bg-black/10 transition"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" width="35" height="50" viewBox="0 0 24 24"><path fill="#000000" d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8A1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5a5 5 0 0 1-5 5a5 5 0 0 1-5-5a5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3a3 3 0 0 0 3 3a3 3 0 0 0 3-3a3 3 0 0 0-3-3Z"/></svg>
+</a>
+)}
+
+{data.tiktok && (
+  <a 
+    href={data.tiktok} 
+    target="_blank" 
+    rel="noopener noreferrer" 
+    aria-label="TikTok"
+    className="max-w-5 h-5 flex items-center justify-center cursor-pointer rounded hover:bg-black/10 transition"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="50" viewBox="0 0 24 24"><path fill="#000000" d="M12.525.02c1.31-.02 2.61-.01 3.91-.02c.08 1.53.63 3.09 1.75 4.17c1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97c-.57-.26-1.1-.59-1.62-.93c-.01 2.92.01 5.84-.02 8.75c-.08 1.4-.54 2.79-1.35 3.94c-1.31 1.92-3.58 3.17-5.91 3.21c-1.43.08-2.86-.31-4.08-1.03c-2.02-1.19-3.44-3.37-3.65-5.71c-.02-.5-.03-1-.01-1.49c.18-1.9 1.12-3.72 2.58-4.96c1.66-1.44 3.98-2.13 6.15-1.72c.02 1.48-.04 2.96-.04 4.44c-.99-.32-2.15-.23-3.02.37c-.63.41-1.11 1.04-1.36 1.75c-.21.51-.15 1.07-.14 1.61c.24 1.64 1.82 3.02 3.5 2.87c1.12-.01 2.19-.66 2.77-1.61c.19-.33.4-.67.41-1.06c.1-1.79.06-3.57.07-5.36c.01-4.03-.01-8.05.02-12.07z"/></svg>
+  </a>
+)}
+
+{data.facebook && (
+  <a 
+    href={data.facebook} 
+    target="_blank" 
+    rel="noopener noreferrer" 
+    aria-label="Facebook"
+    className="max-w-5 h-5 flex items-center justify-center cursor-pointer rounded hover:bg-black/10 transition"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="50" viewBox="0 0 224 432"><path fill="#000000" d="M145 429H66V235H0v-76h66v-56q0-48 27-74t72-26q36 0 59 3v67l-41 1q-22 0-30 9t-8 27v49h76l-10 76h-66v194z"/></svg>
+  </a>
+)}
+
+{data.phone && (
+  <a 
+    href={data.phone} 
+    target="_blank" 
+    rel="noopener noreferrer" 
+    aria-label="Phone"
+    className="max-w-5 h-5 flex items-center justify-center cursor-pointer rounded hover:bg-black/10 transition"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="50" viewBox="0 0 16 16"><path fill="#000000" fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42a18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/></svg>
+  </a>
+)}
+</div>
+</div>
+/*}
 
 
   {/* Working Hours Dropdown */}
@@ -203,7 +244,7 @@ export default function Template1({ data }) {
         </p>
         
         <p dir="ltr">&copy; {new Date().getFullYear()} CRTGO & {data.name} — جميع الحقوق محفوظة</p>
-        <p>CREATED BY <a href="/">CRTGO, WEB SERVICES ❤️</a></p>
+        <p dir="ltr">CREATED BY <a href="/">CRTGO, WEB SERVICES ❤️</a></p>
       </footer>
 
     </div>
