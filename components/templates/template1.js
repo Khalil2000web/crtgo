@@ -286,7 +286,7 @@ if (!mounted) return null;
 
       {/* Footer */}
 <footer className="mt-12 border-t border-[#1111111c] text-center flex flex-col gap-4 items-center justify-center py-8 mb-3">
-<div className="w-[70%] mx-auto flex flex-wrap justify-between mt-2 text-black">
+<div className="w-[70%] md:w-[45%] lg:w-[40%] mx-auto flex flex-wrap justify-between mt-2 text-black">
   {data.instagram && (
     <Link
       href={data.instagram}
