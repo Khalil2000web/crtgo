@@ -8,7 +8,7 @@ import Script from "next/script";
 import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/solid";
 import { PhoneIcon } from "@heroicons/react/24/outline";
 import { FaInstagram, FaFacebook, FaTiktok, FaPhoneAlt } from "react-icons/fa";
-
+import { MdOutlineLanguage } from "react-icons/md";
 import { IoSearch } from "react-icons/io5";
 
 import { Noto_Sans_Arabic } from "next/font/google";
@@ -77,13 +77,14 @@ return (
   dir={lang === "ar" ? "rtl" : "rtl"} >
 
 {/* Header */}
-<header dir="ltr" className="fixed top-[20px] left-0 w-full flex items-center justify-between px-2 text-center overflow-hidden">
+<header dir="ltr" className="z-1000 fixed top-[20px] left-0 w-full flex items-center justify-between px-2 text-center overflow-hidden">
   <h2 className="text-[#ffb34b] uppercase font-[arial] font-bold">{data.name[lang]}</h2>
 
 
 <div className="flex justify-center items-center">
   <Menu as="div" className="relative">
-    <Menu.Button className="py-2 px-3 rounded-lg border bg-white">
+    <Menu.Button className="py-2 px-3 rounded-full text-sm border bg-white flex items-center justify-center gap-2">
+      <MdOutlineLanguage className="text-sm"/>
       {lang === "ar" ? "عربي" : "עברית"}
     </Menu.Button>
 
@@ -121,7 +122,7 @@ return (
 
 
 
-<div className="flex flex-wrap items-center justify-center gap-3 mt-5">
+<div className="flex flex-wrap items-center justify-center gap-3">
 
   {data.instagram && (
     <Link
