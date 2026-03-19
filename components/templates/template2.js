@@ -71,23 +71,19 @@ if (!mounted) return null;
 
   const sections = data.sections || []
 
-  return (
-    <>
-    <div
-  className={`${notoArabic.className} font-sans bg-[#484151] text-[#ffb34b] scroll-smooth`}
-  dir={lang === "ar" ? "rtl" : "rtl"}
->
+return (
+<>
+<div className=" font-sans bg-[#090909] text-[#fdb600] scroll-smooth"
+  dir={lang === "ar" ? "rtl" : "rtl"} >
 
-      {/* Header */}
-      <header className="fixed w-full flex items-center justify-between px-2 text-center overflow-hidden">
-        <h2 className="text-[#ffb34b] uppercase pb-5">{data.name[lang]}</h2>
+{/* Header */}
+<header dir="ltr" className="fixed top-[20px] left-0 w-full flex items-center justify-between px-2 text-center overflow-hidden">
+  <h2 className="text-[#ffb34b] uppercase font-[arial] font-bold">{data.name[lang]}</h2>
 
-        <button><IoSearch className="text-lg"/></button>
-      </header>
 
-<div className="flex justify-center mt-4">
+<div className="flex justify-center items-center">
   <Menu as="div" className="relative">
-    <Menu.Button className="px-3 py-1 rounded border bg-white">
+    <Menu.Button className="py-2 px-3 rounded-lg border bg-white">
       {lang === "ar" ? "عربي" : "עברית"}
     </Menu.Button>
 
@@ -120,6 +116,9 @@ if (!mounted) return null;
     </Menu.Items>
   </Menu>
 </div>
+</header>
+
+
 
 
 <div className="flex flex-wrap items-center justify-center gap-3 mt-5">
