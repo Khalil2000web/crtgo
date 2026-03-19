@@ -78,7 +78,7 @@ if (!mounted) return null;
 
       {/* Header */}
       <header className="relative w-full h-[350px] flex items-end justify-center text-center overflow-hidden">
-        <Image src={data.biglogo} alt="header image" fill className="object-cover z-1" />
+        <Image src={data.biglogo} alt="header image" fill className="pointer-events-none object-cover z-1" />
         <h2 className="relative z-10 text-white uppercase text-[clamp(2rem,5vw,4rem)] pb-5">{data.name[lang]}</h2>
       </header>
 
@@ -252,7 +252,7 @@ if (!mounted) return null;
                     className="flex-shrink-0 w-[260px] border-l border-[#1111111c] last:border-l-0 text-center"
                   >
                     <div className="relative w-[200px] h-[200px] mx-auto mb-2">
-                      <Image src={item.img} alt={item.name} fill className="object-cover rounded-full" />
+                      <Image src={item.img} alt={item.name} fill className="pointer-events-none object-cover rounded-full" />
                     </div>
                     <div className="p-4 flex flex-col">
 <div className="w-full text-center font-semibold text-base mb-1 flex items-start justify-center">
