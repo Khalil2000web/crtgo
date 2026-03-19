@@ -7,7 +7,7 @@ import { Disclosure } from "@headlessui/react";
 import Script from "next/script";
 import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/solid";
 import { PhoneIcon } from "@heroicons/react/24/outline";
-import { FaInstagram, FaFacebook, FaTiktok } from "react-icons/fa";
+import { FaInstagram, FaFacebook, FaTiktok, FaPhoneAlt } from "react-icons/fa";
 
 import { Noto_Sans_Arabic } from "next/font/google";
 
@@ -17,9 +17,43 @@ const notoArabic = Noto_Sans_Arabic({
   display: "swap",
 });
 
+const translations = {
+  ar: {
+    workingHours: "ساعات العمل",
+    days: {
+      sunday: "الأحد",
+      monday: "الاثنين",
+      tuesday: "الثلاثاء",
+      wednesday: "الأربعاء",
+      thursday: "الخميس",
+      friday: "الجمعة",
+      saturday: "السبت",
+    },
+    terms: "شروط الاستخدام",
+    createdBy: "CREATED BY CRTGO, WEB SERVICES ❤️",
+    allrights: "جميع الحقوق محفوظة",
+  },
+  he: {
+    workingHours: "שעות פתיחה",
+    days: {
+      sunday: "יום ראשון",
+      monday: "יום שני",
+      tuesday: "יום שלישי",
+      wednesday: "יום רביעי",
+      thursday: "יום חמישי",
+      friday: "יום שישי",
+      saturday: "שבת",
+    },
+    terms: "תנאי שימוש",
+    createdBy: "CREATED BY CRTGO, WEB SERVICES ❤️",
+    allrights: "כל הזכויות שמורות",
+  },
+};
+
 
 export default function Template1({ data }) {
 const [mounted, setMounted] = useState(false);
+const [lang, setLang] = useState("ar"); // default Arabic
 
 useEffect(() => {
   setMounted(true);
@@ -37,16 +71,37 @@ if (!mounted) return null;
 
   return (
     <>
-    <div className={`${notoArabic.className} font-sans bg-[#fefefe] text-[#877259] scroll-smooth`} dir="rtl">
+    <div
+  className={`${notoArabic.className} font-sans bg-[#fefefe] text-[#877259] scroll-smooth`}
+  dir={lang === "ar" ? "rtl" : "rtl"}
+>
 
       {/* Header */}
       <header className="relative w-full h-[350px] flex items-end justify-center text-center overflow-hidden">
         <Image src={data.biglogo} alt="header image" fill className="object-cover z-1" />
-        <h2 className="relative z-10 text-white uppercase text-[clamp(2rem,5vw,4rem)] pb-5">{data.name}</h2>
+        <h2 className="relative z-10 text-white uppercase text-[clamp(2rem,5vw,4rem)] pb-5">{data.name[lang]}</h2>
       </header>
 
+<div className="flex justify-center gap-2 mt-4">
 
-<div className="flex flex-wrap justify-center gap-3 mt-5">
+<button
+  onClick={() => setLang("ar")}
+  className={`px-3 py-1 rounded border ${lang === "ar" ? "bg-black text-white" : ""}`}
+>
+  عربي
+</button>
+
+<button
+  onClick={() => setLang("he")}
+  className={`px-3 py-1 rounded border ${lang === "he" ? "bg-black text-white" : ""}`}
+>
+  עברית
+</button>
+
+</div>
+
+
+<div className="flex flex-wrap items-center justify-center gap-3 mt-5">
 
   {data.instagram && (
     <Link
@@ -83,7 +138,7 @@ if (!mounted) return null;
       href={`tel:${data.phone}`}
       className="flex items-center justify-center w-9 h-9 rounded-md hover:bg-gray-50 transition"
     >
-      <PhoneIcon className="text-lg" />
+      <FaPhoneAlt className="text-lg" />
     </Link>
   )}
 
@@ -149,7 +204,7 @@ if (!mounted) return null;
   {({ open }) => (
     <>
       <Disclosure.Button className="flex w-full justify-between bg-white px-4 py-2 text-left text-gray-900 font-medium md:shadow md:rounded-lg focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
-        <span>ساعات العمل</span>
+        <span>{translations[lang].workingHours}</span>
         {open ? (
           <ChevronUpIcon className="w-5 h-5 text-gray-500" />
         ) : (
@@ -158,12 +213,12 @@ if (!mounted) return null;
       </Disclosure.Button>
 <Disclosure.Panel className="bg-white md:shadow md:rounded-lg p-4 mt-2">
   <ul className="space-y-1 text-gray-700">
-    {Object.entries(data.hours).map(([day, time]) => (
-      <li key={day} className="flex justify-between">
-        <span>{day}</span>
-        <span>{time}</span>
-      </li>
-    ))}
+{Object.entries(data.hours).map(([day, time]) => (
+  <li key={day} className="flex justify-between">
+    <span>{translations[lang].days[day]}</span>
+    <span>{time}</span>
+  </li>
+))}
   </ul>
 </Disclosure.Panel>
     </>
@@ -179,7 +234,7 @@ if (!mounted) return null;
             onClick={() => scrollToSection(section.id)}
             className="border border-black rounded font-bold px-4 py-2 transition-transform hover:scale-105 text-[#6c5e4f]"
           >
-            {section.title}
+            {section.title[lang]}
           </button>
         ))}
       </div>
@@ -189,7 +244,7 @@ if (!mounted) return null;
         if (section.type === "menu") {
           return (
             <div key={i} id={section.id} className="scroll-mt-32 w-full py-8">
-              <h2 className="text-center text-[#1e394b] text-xl mb-5">{section.title}</h2>
+              <h2 className="text-center text-[#1e394b] text-xl mb-5">{section.title[lang]}</h2>
               <div className="flex overflow-x-auto px-5 scrollbar-none">
                 {section.items.map((item, idx) => (
                   <div
@@ -202,7 +257,7 @@ if (!mounted) return null;
                     <div className="p-4 flex flex-col">
 <div className="w-full text-center font-semibold text-base mb-1 flex items-start justify-center">
   {/* Wrap the name in a span */}
-  <p className="ml-1 text-black text-center">{item.name}</p>
+  <p className="ml-1 text-black text-center">{item.name[lang]}</p>
 
   {item.spicy && (
     <span className="w-5 h-5 flex-shrink-0 ">
@@ -218,7 +273,7 @@ if (!mounted) return null;
   )}
 </div>
                       <div className="text-[#1e394b] mb-2">₪{item.price}</div>
-                      <div className="text-[#6c5e4f] text-sm overflow-auto">{item.desc}</div>
+                      <div className="text-[#6c5e4f] text-sm overflow-auto">{item.desc[lang]}</div>
                     </div>
                   </div>
                 ))}
@@ -230,20 +285,53 @@ if (!mounted) return null;
       })}
 
       {/* Footer */}
-      <footer className="mt-12 border-t border-[#1111111c] text-center flex flex-col gap-4 items-center justify-center py-8">
-        <div className="flex flex-wrap justify-center gap-8 w-[90%] pb-8">
-          {data.instagram && (
-            <a href={data.instagram} target="_blank" rel="noopener noreferrer" className="text-black p-1 rounded hover:bg-black/10 transition">
-              Instagram
-            </a>
-          )}
-        </div>
+<footer className="mt-12 border-t border-[#1111111c] text-center flex flex-col gap-4 items-center justify-center py-8 mb-3">
+<div className="w-[70%] mx-auto flex flex-wrap justify-between mt-2 text-black">
+  {data.instagram && (
+    <Link
+      href={data.instagram}
+      target="_blank"
+      className="p-2 flex items-center justify-center w-10 h-10 rounded-md hover:bg-gray-50 transition"
+    >
+      <FaInstagram className="text-lg" />
+    </Link>
+  )}
 
-        <p>
-          <a href="/terms">شروط الاستخدام</a>
-        </p>
+  {data.facebook && (
+    <Link
+      href={data.facebook}
+      target="_blank"
+      className="p-2 flex items-center justify-center w-10 h-10 rounded-md hover:bg-gray-50 transition"
+    >
+      <FaFacebook className="text-lg" />
+    </Link>
+  )}
+
+  {data.tiktok && (
+    <Link
+      href={data.tiktok}
+      target="_blank"
+      className="p-2 flex items-center justify-center w-10 h-10 rounded-md hover:bg-gray-50 transition"
+    >
+      <FaTiktok className="text-lg" />
+    </Link>
+  )}
+
+  {data.phone && (
+    <Link
+      href={`tel:${data.phone}`}
+      className="p-2 flex items-center justify-center w-10 h-10 rounded-md hover:bg-gray-50 transition"
+    >
+      <FaPhoneAlt className="text-lg" />
+    </Link>
+  )}
+
+</div>
+
+  <Link className="p-3 underline text-black underline-offset-2 hover:text-gray-700" href="/terms">{translations[lang].terms}</Link>
         
-        <p dir="ltr">&copy; {new Date().getFullYear()} CRTGO & {data.name} — جميع الحقوق محفوظة</p>
+        <p dir="ltr">&copy; {new Date().getFullYear()} CRTGO & {data.name[lang]}</p>
+        <p> {translations[lang].allrights}</p>
         <p dir="ltr">CREATED BY <a href="/">CRTGO, WEB SERVICES ❤️</a></p>
       </footer>
 
