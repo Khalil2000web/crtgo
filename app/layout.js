@@ -3,7 +3,7 @@ import './globals.css';
 import { Analytics } from "@vercel/analytics/next"
 
 export const metadata = {
-  title: 'My Site Builder',
+  title: 'CRTGO',
 };
 
 export default function RootLayout({ children }) {
