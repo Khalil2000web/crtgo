@@ -3,13 +3,14 @@
 import { useState, useRef, Fragment, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Disclosure, Menu } from "@headlessui/react";
+import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react"
 import Script from "next/script";
 import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/solid";
 import { PhoneIcon } from "@heroicons/react/24/outline";
 import { FaInstagram, FaFacebook, FaTiktok, FaPhoneAlt } from "react-icons/fa";
 import { MdOutlineLanguage } from "react-icons/md";
 import { IoSearch } from "react-icons/io5";
+import { RiTimeLine } from "react-icons/ri";
 
 import { Noto_Sans_Arabic } from "next/font/google";
 
@@ -22,6 +23,7 @@ const notoArabic = Noto_Sans_Arabic({
 const translations = {
   ar: {
     workingHours: "ساعات العمل",
+    workingHoursModalClose: "إغلاق",
     days: {
       sunday: "الأحد",
       monday: "الاثنين",
@@ -37,6 +39,7 @@ const translations = {
   },
   he: {
     workingHours: "שעות פתיחה",
+    workingHoursModalClose: "סגור",
     days: {
       sunday: "יום ראשון",
       monday: "יום שני",
@@ -56,6 +59,7 @@ const translations = {
 export default function Template1({ data }) {
 const [mounted, setMounted] = useState(false);
 const [lang, setLang] = useState("ar"); // default Arabic
+const [isOpen, setIsOpen] = useState(false)
 
 useEffect(() => {
   setMounted(true);
@@ -73,246 +77,193 @@ if (!mounted) return null;
 
 return (
 <>
-<div className=" font-sans bg-[#090909] text-[#fdb600] scroll-smooth"
+<div className=" font-sans bg-[#091413] text-[#B0E4CC] scroll-smooth"
   dir={lang === "ar" ? "rtl" : "rtl"} >
 
-{/* Header */}
-<header dir="ltr" className="z-1000 fixed top-[20px] left-0 w-full flex items-center justify-between px-2 text-center overflow-hidden">
-  <h2 className="text-[#ffb34b] uppercase font-[arial] font-bold">{data.name[lang]}</h2>
+<header
+  dir="ltr"
+  className="border-b border-white/20 w-full h-[400px] flex flex-col items-center justify-center text-center bg-center bg-cover"
+  style={{ backgroundImage: `url(${data.headerimg})` }}
+>
+  <Image
+    src={data.logo}
+    alt="logo"
+    width={100}
+    height={100}
+    className="rounded-full border border-white pointer-events-none"
+  />
+  <h2 className="text-lg text-center text-white font-bold p-3">{data.name[lang]}</h2>
+  <button onClick={() => setIsOpen(true)} className="flex items-center justify-center rounded-full text-sm cursor-pointer p-2 hover:bg-white hover:text-black transition border font-bold border-gray ">
+    <RiTimeLine className="text-lg" /> <p className="pl-2 text-sm">{translations[lang].workingHours}</p>
+  </button>
 
 
-<div className="flex justify-center items-center">
-  <Menu as="div" className="relative">
-    <Menu.Button className="py-2 px-3 rounded-full text-sm border bg-white flex items-center justify-center gap-2">
-      <MdOutlineLanguage className="text-sm"/>
-      {lang === "ar" ? "عربي" : "עברית"}
-    </Menu.Button>
 
-    <Menu.Items className="absolute mt-2 w-32 border rounded bg-white shadow focus:outline-none">
-      <Menu.Item>
-        {({ active }) => (
-          <button
-            onClick={() => setLang("ar")}
-            className={`w-full text-center px-3 py-2 ${
-              lang === "ar" ? "bg-black text-white" : active ? "bg-gray-100" : ""
-            }`}
-          >
-            عربي
-          </button>
-        )}
-      </Menu.Item>
 
-      <Menu.Item>
-        {({ active }) => (
-          <button
-            onClick={() => setLang("he")}
-            className={`w-full text-center px-3 py-2 ${
-              lang === "he" ? "bg-black text-white" : active ? "bg-gray-100" : ""
-            }`}
-          >
-            עברית
-          </button>
-        )}
-      </Menu.Item>
-    </Menu.Items>
-  </Menu>
+<div className="flex flex-wrap items-center justify-center gap-3 pt-3">
+
+  {data.instagram && (
+    <Link
+      href={data.instagram}
+      target="_blank"
+      className="flex items-center justify-center w-9 h-9 rounded-md hover:bg-gray-50 hover:text-black transition"
+    >
+      <FaInstagram className="text-lg" />
+    </Link>
+  )}
+
+  {data.facebook && (
+    <Link
+      href={data.facebook}
+      target="_blank"
+      className="flex items-center justify-center w-9 h-9 rounded-md hover:bg-gray-50 hover:text-black transition"
+    >
+      <FaFacebook className="text-lg" />
+    </Link>
+  )}
+
+  {data.tiktok && (
+    <Link
+      href={data.tiktok}
+      target="_blank"
+      className="flex items-center justify-center w-9 h-9 rounded-md hover:bg-gray-50 hover:text-black transition"
+    >
+      <FaTiktok className="text-lg" />
+    </Link>
+  )}
+
+  {data.phone && (
+    <Link
+      href={`tel:${data.phone}`}
+      className="flex items-center justify-center w-9 h-9 rounded-md hover:bg-gray-50 hover:text-black transition"
+    >
+      <FaPhoneAlt className="text-lg" />
+    </Link>
+  )}
+
+</div>
+
+
+
+<div className="flex justify-center gap-2 mt-4">
+
+<button
+  onClick={() => setLang("ar")}
+  className={`px-3 py-1 cursor-pointer rounded border ${lang === "ar" ? "bg-white text-black cursor-default" : ""}`}
+>
+  عربي
+</button>
+
+<button
+  onClick={() => setLang("he")}
+  className={`px-3 py-1 cursor-pointer rounded border ${lang === "he" ? "bg-white text-black cursor-default" : ""}`}
+>
+  עברית
+</button>
+
 </div>
 </header>
 
 
+<Dialog open={isOpen} onClose={() => setIsOpen(false)} className="relative z-50000">
+  <div className="fixed inset-0 bg-black/40" />
 
+  <div className="fixed inset-0 flex items-center justify-center p-4">
+    <DialogPanel className="bg-white p-6 rounded-md w-[70vh] md:w-[50vh] min-h-[350px] shadow-lg flex flex-col">
+      <DialogTitle className="text-[1.25rem] pb-3 text-right font-bold">{translations[lang].workingHours}</DialogTitle>
 
-<div className="flex flex-wrap items-center justify-center gap-3">
-
-  {data.instagram && (
-    <Link
-      href={data.instagram}
-      target="_blank"
-      className="flex items-center justify-center w-9 h-9 rounded-md hover:bg-gray-50 transition"
-    >
-      <FaInstagram className="text-lg" />
-    </Link>
-  )}
-
-  {data.facebook && (
-    <Link
-      href={data.facebook}
-      target="_blank"
-      className="flex items-center justify-center w-9 h-9 rounded-md hover:bg-gray-50 transition"
-    >
-      <FaFacebook className="text-lg" />
-    </Link>
-  )}
-
-  {data.tiktok && (
-    <Link
-      href={data.tiktok}
-      target="_blank"
-      className="flex items-center justify-center w-9 h-9 rounded-md hover:bg-gray-50 transition"
-    >
-      <FaTiktok className="text-lg" />
-    </Link>
-  )}
-
-  {data.phone && (
-    <Link
-      href={`tel:${data.phone}`}
-      className="flex items-center justify-center w-9 h-9 rounded-md hover:bg-gray-50 transition"
-    >
-      <FaPhoneAlt className="text-lg" />
-    </Link>
-  )}
-
-</div>
-
-{/* <div className="flex flex-row justify-center pt-[20px]">
-<div className="flex flex-wrap justify-center gap-8 w-[90%] mt-8 h-[90px] min-h-[90px]">
-
-{data.instagram && (
-<a
-  href={data.instagram}
-  target="_blank"
-  rel="noopener noreferrer"
-  className="w-[40px] h-[40px] flex items-center justify-center cursor-pointer rounded hover:bg-black/10 transition"
->
-  <svg xmlns="http://www.w3.org/2000/svg" width="35" height="50" viewBox="0 0 24 24"><path fill="#000000" d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8A1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5a5 5 0 0 1-5 5a5 5 0 0 1-5-5a5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3a3 3 0 0 0 3 3a3 3 0 0 0 3-3a3 3 0 0 0-3-3Z"/></svg>
-</a>
-)}
-
-{data.tiktok && (
-  <a 
-    href={data.tiktok} 
-    target="_blank" 
-    rel="noopener noreferrer" 
-    aria-label="TikTok"
-    className="max-w-5 h-5 flex items-center justify-center cursor-pointer rounded hover:bg-black/10 transition"
-  >
-    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="50" viewBox="0 0 24 24"><path fill="#000000" d="M12.525.02c1.31-.02 2.61-.01 3.91-.02c.08 1.53.63 3.09 1.75 4.17c1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97c-.57-.26-1.1-.59-1.62-.93c-.01 2.92.01 5.84-.02 8.75c-.08 1.4-.54 2.79-1.35 3.94c-1.31 1.92-3.58 3.17-5.91 3.21c-1.43.08-2.86-.31-4.08-1.03c-2.02-1.19-3.44-3.37-3.65-5.71c-.02-.5-.03-1-.01-1.49c.18-1.9 1.12-3.72 2.58-4.96c1.66-1.44 3.98-2.13 6.15-1.72c.02 1.48-.04 2.96-.04 4.44c-.99-.32-2.15-.23-3.02.37c-.63.41-1.11 1.04-1.36 1.75c-.21.51-.15 1.07-.14 1.61c.24 1.64 1.82 3.02 3.5 2.87c1.12-.01 2.19-.66 2.77-1.61c.19-.33.4-.67.41-1.06c.1-1.79.06-3.57.07-5.36c.01-4.03-.01-8.05.02-12.07z"/></svg>
-  </a>
-)}
-
-{data.facebook && (
-  <a 
-    href={data.facebook} 
-    target="_blank" 
-    rel="noopener noreferrer" 
-    aria-label="Facebook"
-    className="max-w-5 h-5 flex items-center justify-center cursor-pointer rounded hover:bg-black/10 transition"
-  >
-    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="50" viewBox="0 0 224 432"><path fill="#000000" d="M145 429H66V235H0v-76h66v-56q0-48 27-74t72-26q36 0 59 3v67l-41 1q-22 0-30 9t-8 27v49h76l-10 76h-66v194z"/></svg>
-  </a>
-)}
-
-{data.phone && (
-  <a 
-    href={data.phone} 
-    target="_blank" 
-    rel="noopener noreferrer" 
-    aria-label="Phone"
-    className="max-w-5 h-5 flex items-center justify-center cursor-pointer rounded hover:bg-black/10 transition"
-  >
-    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="50" viewBox="0 0 16 16"><path fill="#000000" fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42a18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/></svg>
-  </a>
-)}
-</div>
-</div>
-/*}
-
-
-  {/* Working Hours Dropdown */}
-<div className="w-full max-w-md mx-auto p-2">
-<Disclosure>
-  {({ open }) => (
-    <>
-      <Disclosure.Button className="flex w-full justify-between bg-white px-4 py-2 text-left text-gray-900 font-medium md:shadow md:rounded-lg focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
-        <span>{translations[lang].workingHours}</span>
-        {open ? (
-          <ChevronUpIcon className="w-5 h-5 text-gray-500" />
-        ) : (
-          <ChevronDownIcon className="w-5 h-5 text-gray-500" />
-        )}
-      </Disclosure.Button>
-<Disclosure.Panel className="bg-white md:shadow md:rounded-lg p-4 mt-2">
-  <ul className="space-y-1 text-gray-700">
+        <ul className="space-y-1 text-gray-700">
 {Object.entries(data.hours).map(([day, time]) => (
   <li key={day} className="flex justify-between">
-    <span>{translations[lang].days[day]}</span>
-    <span>{time}</span>
-  </li>
+    <span className="font-bold">{time}</span>
+    <span className="font-bold">{translations[lang].days[day]}</span>
+  </li> 
 ))}
   </ul>
-</Disclosure.Panel>
-    </>
-  )}
-</Disclosure>
+
+<div className="mt-auto flex justify-center">
+  <button
+    onClick={() => setIsOpen(false)}
+    className="px-3 py-1 bg-gray-200 rounded cursor-pointer hover:bg-gray-300 transition font-bold border border-gray-400"
+  >
+    {translations[lang].workingHoursModalClose}
+  </button>
+</div>
+    </DialogPanel>
+  </div>
+</Dialog>
+
+
+
+
+
+<div className="flex flex-wrap justify-center gap-5 py-6 mt-3">
+  {sections.map((section) => (
+    <button
+      key={section.id}
+      onClick={() => scrollToSection(section.id)}
+      style={{ backgroundImage: `url(${section.image})` }}
+      className="border border-white rounded-full cursor-pointer w-[90px] h-[90px] flex items-center justify-center font-bold px-4 py-2 transition-transform hover:scale-105 text-[#fff] bg-cover bg-center"
+    >
+      {section.title[lang]}
+    </button>
+  ))}
 </div>
 
-      {/* Section Buttons */}
-      <div className="sticky top-0 z-[100000] flex flex-wrap justify-center gap-4 bg-[rgba(254,254,254,0.9)] border-b border-[#1111111c] py-6">
-        {sections.map((section) => (
-          <button
-            key={section.id}
-            onClick={() => scrollToSection(section.id)}
-            className="border border-black rounded font-bold px-4 py-2 transition-transform hover:scale-105 text-[#6c5e4f]"
-          >
-            {section.title[lang]}
-          </button>
-        ))}
-      </div>
 
-      {/* Sections */}
-      {sections.map((section, i) => {
-        if (section.type === "menu") {
-          return (
-            <div key={i} id={section.id} className="scroll-mt-32 w-full py-8">
-              <h2 className="text-center text-[#1e394b] text-xl mb-5">{section.title[lang]}</h2>
-              <div className="flex overflow-x-auto px-5 scrollbar-none">
-                {section.items.map((item, idx) => (
-                  <div
-                    key={idx}
-                    className="flex-shrink-0 w-[260px] border-l border-[#1111111c] last:border-l-0 text-center"
-                  >
-                    <div className="relative w-[200px] h-[200px] mx-auto mb-2">
-                      <Image src={item.img} alt={item.name} fill className="object-cover rounded-full" />
-                    </div>
-                    <div className="p-4 flex flex-col">
-<div className="w-full text-center font-semibold text-base mb-1 flex items-start justify-center">
-  {/* Wrap the name in a span */}
-  <p className="ml-1 text-black text-center">{item.name[lang]}</p>
+{sections.map((section, i) => {
+  if (section.type === "menu") {
+    return (
+      <div key={i} id={section.id} className="scroll-mt-20 w-full py-8">
+        <h2 className="text-center text-[#fff] font-bold text-xl mb-5">
+          {section.title[lang]}
+        </h2>
 
-  {item.spicy && (
-    <span className="w-5 h-5 flex-shrink-0 ">
-      <svg 
-        xmlns="http://www.w3.org/2000/svg" 
-        viewBox="0 0 512 512" 
-        fill="#e22400" 
-        className="w-full h-full"
-      >
-        <path d="M207.375 13.78v.064c83.385 68.488-50.732 105.97-37.22 175.22c-20.55-13.762-28.066-46.66-8.78-74.97c-51.085 21.935-73.42 51.99-72.156 97.562c.945 34.13 14.638 61.58 35.843 82.188c-9.787-27.448-12.016-55.74-5.188-79.813c35.742 49.332 137.785-19.994 147.094-79.28c-.044 63.674 63.996 118.35 112.717 52.375c8.932 36.97 6.638 75.307-3.218 105.688c19.407-20.337 31.706-47.33 32.374-81.157c.93-47.127-21.048-90.8-62.72-112.75c18.15 38.878-.498 65.598-43.655 83.75c40.28-67.494 16.386-154.454-95.095-168.875zm42.938 226.314c-5.97-.086-12.564 2.295-20.657 8.375c-38.238 28.725-88.54 77.01-99.156 108.718c-18.667-4.37-43.156 2.323-43.156 20.53c0 2.01.32 3.89.875 5.626c-9.91-.4-20.22 3.9-20.22 13.03c0 16.998 35.74 17.686 38.063 1.657c10.356 2.978 22.947 2.34 32.218-2.03c-.75 1.842-1.155 3.867-1.155 6.094c0 22.752 42.915 25.947 54.25 9.094c9.533 6.947 29.795 4.92 32.844-6.25c15.97 1.403 32.385 1.755 48.436.968c8.543 5.77 24.793 4.8 30.625-3c12.788-1.938 25.004-4.72 36.158-8.406c1.9 16.216 38.093 15.92 38.093-1.344c0-.75-.047-1.47-.186-2.156c11.238 3.032 26.594-1 26.594-12.25c0-11.025-15.614-15.103-26.875-12.03c.36-28.628-58.605-80.767-105.063-116.595c-7.39-5.698-14.014-9.92-21.688-10.03zM440 352.5c-9.547-.042-19.094 4.28-19.094 13.063c0 17.567 38.188 17.727 38.188 0c0-8.617-9.547-13.02-19.094-13.063zm-403.344 10c-9.547-.042-19.093 4.28-19.093 13.063c0 17.567 38.187 17.727 38.187 0c0-8.616-9.547-13.02-19.094-13.063zm430.563 20.406c-9.548-.042-19.095 4.28-19.095 13.063c0 17.566 38.188 17.725 38.188 0c0-8.618-9.547-13.022-19.094-13.064zm-49.69 25.438c-10.747-.047-21.5 4.8-21.5 14.687c0 19.776 43 19.955 43 0c0-9.7-10.75-14.64-21.5-14.686zm-79.967 2.97c-9.548-.02-19.094 4.385-19.094 13.248c0 12.037 18.638 15.825 29.874 11.032c9.403 8.896 34.72 6.462 34.72-7.844c-.002-12.274-18.61-16.01-29.845-11.125c-3.628-3.506-9.637-5.3-15.658-5.313zm-87.22 1.623c-9.546-.04-19.093 4.248-19.093 13.032c0 17.566 38.188 17.725 38.188 0c0-8.618-9.547-12.99-19.094-13.033zm-129.124 14.72c-11.25-.024-22.5 5.12-22.5 15.562c0 12.422 16.83 17.38 29.905 14.624c8.686 9.834 35.5 7.69 35.5-7.03c0-9.57-11.34-13.963-21.656-13.127c-3.226-6.658-12.237-10.012-21.25-10.03zM294.75 439c-8.405-.037-16.8 2.873-20.25 8.78c-14.795-4.1-35.25 1.04-35.25 15.783c0 21.294 42.68 23.124 49.313 5c12.56 2.32 28.093-2.493 28.093-14.594c0-9.88-10.958-14.922-21.906-14.97zm-97 22.656c-10.748-.047-21.47 4.8-21.47 14.688c0 19.776 42.97 19.955 42.97 0c0-9.7-10.752-14.64-21.5-14.688zm228.125 1.406c-9.547-.04-19.094 4.28-19.094 13.063c0 17.567 38.19 17.726 38.19 0c0-8.616-9.548-13.02-19.095-13.063z"/>
-      </svg>
-    </span>
-  )}
-</div>
-                      <div className="text-[#1e394b] mb-2">₪{item.price}</div>
-                      <div className="text-[#6c5e4f] text-sm overflow-auto">{item.desc[lang]}</div>
-                    </div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 px-5">
+          {section.items.map((item, idx) => (
+            <div key={idx} className="w-full">
+              <div className="relative w-full aspect-square overflow-hidden rounded-lg">
+
+                <Image
+                  src={item.img}
+                  alt={item.name[lang]}
+                  fill
+                  className="object-cover"
+                />
+
+                {/* Bottom overlay */}
+                <div className="absolute bottom-0 left-0 right-0 bg-black/70 text-white text-sm flex justify-between items-center px-3 py-2 h-[40px]">
+                  <div className="flex items-center gap-1 font-semibold text-right">
+                  <span className="font-bold">{item.name[lang]}</span>
+
+                    {item.spicy && (
+                      <span className="w-4 h-4 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="24" height="24"><path fill="#de5323" d="M120.74 54.44c.04 1.58-.01 5.59-4.04 14.85c-5.21 11.95-11.17 19.9-14.98 23.7c-3.96 4.78-16.12 18.16-36.47 22.14c-4.69.92-27.32 5.42-43.5-8.33C19.6 104.95 10.87 97.32 10 86c-.36-4.69.56-10.8 2.91-11.33c2.77-.63 4.21 7.23 11.98 12.85c.97.7 9.59 6.75 20.32 4.69c9.76-1.87 15.27-9.3 17.45-12.24c4.93-6.65 6.59-13.82 8.33-21.36c2.01-8.66 2.18-15.46 7.81-21.36c1.06-1.11 2.06-2.14 3.73-3.04c5.69-3.06 12.01-.76 20.84 2.6c8.46 3.23 13.66 5.29 16.06 10.59c1.19 2.62 1.26 5.03 1.31 7.04"/><path fill="#a0b632" d="M82.84 33.8c1.98-1.03 5.01-2.25 9.44-2.21c.93.01 2.05.05 3.33.19c1.1.12 5.3-2.33 6.2-3.77c.82-1.31 1.52-2.7 2.32-4.17c.98-1.79 2.52-4.87 2.7-6.62c.37-3.66-.41-7.81-7.02-6.88c-.82.11-2.73 1.18-3.28-.28c-1.12-2.93 4.86-5.09 8.87-3.21c4.47 2.1 6.19 7.7 6.43 8.92c.61 2.97-.07 5.44-1.39 10.24c-.53 1.94-.91 3.39-1.31 4.94c-.58 2.28.46 5.22 1.23 5.67c4.82 2.77 7.09 6.03 8.15 7.93c1.59 2.85 2.94 7.17 1.95 7.81c-.6.39-2-.62-2.44-.94c-1.43-1.04-1.45-1.88-2.44-2.83c-1.57-1.51-4.11-1.85-5.93-1.5c-2.64.51-2.98 2.48-4.49 2.21c-1.78-.31-1.44-3.11-4.56-5.53c-1.6-1.25-3.15-1.64-3.58-1.74a9.2 9.2 0 0 0-3.97-.02c-2.19.47-2.4 1.37-4.1 1.43c-1.43.05-3.18-.52-3.39-1.43c-.19-.84 1.07-1.25 1.24-2.8c.02-.18.14-1.47-.65-2.28c-.69-.7-1.73-.71-3.54-.72c-1.66-.01-2.35.23-2.47-.04c-.19-.45 1.45-1.72 2.7-2.37"/><path fill="#fff" d="M76.37 75.84c-.44-.03-.89-.16-1.28-.43a2.61 2.61 0 0 1-.74-3.61c1.96-2.97 2.55-7.71 3.03-11.51c.28-2.2.52-4.1.97-5.63c1.5-5.06 5.05-6.67 5.45-6.83a2.603 2.603 0 0 1 2.04 4.79c-.14.07-1.73.91-2.5 3.52c-.33 1.13-.56 2.92-.8 4.81c-.55 4.34-1.23 9.75-3.85 13.73c-.53.79-1.42 1.21-2.32 1.16M67.4 89.69a2.59 2.59 0 0 1-2.25-1.47c-.63-1.3-.08-2.85 1.21-3.48c1.52-.74 3.04-3.29 3.64-4.73a2.6 2.6 0 0 1 3.4-1.4a2.6 2.6 0 0 1 1.41 3.4c-.23.57-2.4 5.59-6.19 7.42c-.39.19-.81.27-1.22.26"/></svg>
+                      </span>
+                    )}
+
                   </div>
-                ))}
+                  <span className="font-bold">₪{item.price}</span>
+                </div>
+
               </div>
             </div>
-          )
-        }
-        return null
-      })}
+          ))}
+        </div>
+      </div>
+    )
+  }
+  return null
+})}
 
       {/* Footer */}
 <footer className="mt-12 border-t border-[#1111111c] text-center flex flex-col gap-4 items-center justify-center py-8 mb-3">
-<div className="w-[70%] md:w-[45%] lg:w-[40%] mx-auto flex flex-wrap justify-between mt-2 text-black">
+<div className="w-[70%] md:w-[45%] lg:w-[40%] mx-auto flex flex-wrap justify-between mt-2">
   {data.instagram && (
     <Link
       href={data.instagram}
       target="_blank"
-      className="p-2 flex items-center justify-center w-10 h-10 rounded-md hover:bg-gray-50 transition"
+      className="p-2 flex items-center justify-center w-10 h-10 rounded-md hover:bg-white hover:text-black transition"
     >
       <FaInstagram className="text-lg" />
     </Link>
@@ -322,7 +273,7 @@ return (
     <Link
       href={data.facebook}
       target="_blank"
-      className="p-2 flex items-center justify-center w-10 h-10 rounded-md hover:bg-gray-50 transition"
+      className="p-2 flex items-center justify-center w-10 h-10 rounded-md hover:bg-white hover:text-black transition"
     >
       <FaFacebook className="text-lg" />
     </Link>
@@ -332,7 +283,7 @@ return (
     <Link
       href={data.tiktok}
       target="_blank"
-      className="p-2 flex items-center justify-center w-10 h-10 rounded-md hover:bg-gray-50 transition"
+      className="p-2 flex items-center justify-center w-10 h-10 rounded-md hover:bg-white hover:text-black transition"
     >
       <FaTiktok className="text-lg" />
     </Link>
@@ -341,7 +292,7 @@ return (
   {data.phone && (
     <Link
       href={`tel:${data.phone}`}
-      className="p-2 flex items-center justify-center w-10 h-10 rounded-md hover:bg-gray-50 transition"
+      className="p-2 flex items-center justify-center w-10 h-10 rounded-md hover:bg-white hover:text-black transition"
     >
       <FaPhoneAlt className="text-lg" />
     </Link>
@@ -349,11 +300,11 @@ return (
 
 </div>
 
-  <Link className="p-3 underline text-black underline-offset-2 hover:text-gray-700" href="/terms">{translations[lang].terms}</Link>
+  <Link className="p-3 underline underline-offset-2 hover:bg-white hover:text-black p-3 rounded hover:font-bold" href="/terms">{translations[lang].terms}</Link>
         
-        <p dir="ltr">&copy; {new Date().getFullYear()} CRTGO & {data.name[lang]}</p>
-        <p> {translations[lang].allrights}</p>
-        <p dir="ltr">CREATED BY <a href="/">CRTGO, WEB SERVICES ❤️</a></p>
+        <p className="text-white" dir="ltr">&copy; {new Date().getFullYear()} CRTGO & {data.name[lang]}</p>
+        <p className="text-white">{translations[lang].allrights}</p>
+        <p className="text-white" dir="ltr">CREATED BY <a href="/">CRTGO, WEB SERVICES ❤️</a></p>
       </footer>
 
     </div>
