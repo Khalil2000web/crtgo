@@ -86,20 +86,35 @@ return (
 
 <header
   dir="ltr"
-  className="border-b border-white/20 w-full h-[400px] flex flex-col items-center justify-center text-center bg-center bg-cover"
-  style={{ backgroundImage: `url(${data.headerimg})` }}
+  className="relative border-b border-white/20 w-full h-[420px] flex flex-col items-center justify-center text-center"
 >
+  {/* Background image with 30% opacity */}
+  <div
+    className="absolute inset-0 bg-center bg-cover opacity-30"
+    style={{ backgroundImage: `url(${data.headerimg})` }}
+  ></div>
+
+  {/* Content on top */}
+  <div className="relative z-10 flex flex-col items-center justify-center text-center w-full h-full">
+<div className="w-[190px] h-[190px] rounded-full overflow-hidden border border-white">
   <Image
     src={data.logo}
     alt="logo"
-    width={100}
-    height={100}
-    className="rounded-full border border-white pointer-events-none"
+    width={190}
+    height={190}
+    className="object-cover pointer-events-none"
   />
-  <h2 className="text-lg text-center text-white font-bold p-3">{data.name[lang]}</h2>
-  <button onClick={() => setIsOpen(true)} className="flex items-center justify-center rounded-full text-sm cursor-pointer p-2 hover:bg-white hover:text-black transition border font-bold border-gray ">
-    <RiTimeLine className="text-lg" /> <p className="pl-2 text-sm">{translations[lang].workingHours}</p>
-  </button>
+</div>
+    <h2 className="text-lg text-white font-bold p-3">{data.name[lang]}</h2>
+    <button
+      onClick={() => setIsOpen(true)}
+      className="flex items-center justify-center rounded-full text-sm cursor-pointer p-2 hover:bg-white hover:text-black transition border font-bold border-gray"
+    >
+      <RiTimeLine className="text-lg" /> 
+      <p className="pl-2 text-sm">{translations[lang].workingHours}</p>
+    </button>
+
+
 
 
 
@@ -166,6 +181,7 @@ return (
 </button>
 
 </div>
+</div>
 </header>
 
 
@@ -206,10 +222,16 @@ return (
     <button
       key={section.id}
       onClick={() => scrollToSection(section.id)}
-      style={{ backgroundImage: `url(${section.image})` }}
-      className="border border-white rounded-full cursor-pointer w-[90px] h-[90px] flex items-center justify-center font-bold px-4 py-2 transition-transform hover:scale-105 text-[#fff] bg-cover bg-center"
+      className="relative border border-white rounded-full cursor-pointer w-[110px] h-[110px] flex items-center justify-center font-bold px-4 py-2 transition-transform hover:scale-105 text-white overflow-hidden"
     >
-      {section.title[lang]}
+      {/* Background image overlay */}
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-50"
+        style={{ backgroundImage: `url(${section.image})` }}
+      ></div>
+
+      {/* Text on top */}
+      <span className="relative z-10">{section.title[lang]}</span>
     </button>
   ))}
 </div>
