@@ -56,7 +56,11 @@ const translations = {
 };
 
 
-export default function Template1({ data }) {
+export default function Template2({ data }) {
+useEffect(() => {
+    document.body.style.backgroundColor = "#091413";
+  }, []);
+
 const [mounted, setMounted] = useState(false);
 const [lang, setLang] = useState("ar"); // default Arabic
 const [isOpen, setIsOpen] = useState(false)
