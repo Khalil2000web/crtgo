@@ -1,15 +1,11 @@
 "use client";
 
-import { useState, useRef, Fragment, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react"
 import Script from "next/script";
-import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/solid";
-import { PhoneIcon } from "@heroicons/react/24/outline";
 import { FaInstagram, FaFacebook, FaTiktok, FaPhoneAlt } from "react-icons/fa";
-import { MdOutlineLanguage } from "react-icons/md";
-import { IoSearch } from "react-icons/io5";
 import { RiTimeLine } from "react-icons/ri";
 
 import { Noto_Sans_Arabic } from "next/font/google";
@@ -82,8 +78,10 @@ if (!mounted) return null;
 
 return (
 <>
-<div className=" font-sans bg-[#091413] text-[#B0E4CC] scroll-smooth"
-  dir={lang === "ar" ? "rtl" : "rtl"} >
+<div
+  className={`${lang === "ar" ? notoArabic.className : ""} bg-[#091413] text-[#B0E4CC] scroll-smooth`}
+  dir={lang === "ar" ? "rtl" : "rtl"}
+>
 
 <header
   dir="ltr"
@@ -216,7 +214,7 @@ return (
 
 
 <Dialog open={!!selectedItem} onClose={() => setSelectedItem(null)} className="relative z-50000">
-  <div className="fixed inset-0 bg-black/40" />
+  <div className="fixed inset-0 bg-black/70" />
 
   <div className="fixed inset-0 flex items-center justify-center p-4">
     <DialogPanel className="bg-white rounded-lg w-[90vw] max-w-md overflow-hidden shadow-xl">
@@ -228,30 +226,29 @@ return (
               src={selectedItem.img}
               alt={selectedItem.name[lang]}
               fill
-              className="object-cover"
+              className="object-cover block pointer-events-none"
             />
           </div>
 
           <div className="p-4 text-black">
-            <DialogTitle className="text-lg font-bold">
+            <DialogTitle className="text-lg text-right font-bold">
               {selectedItem.name[lang]}
             </DialogTitle>
 
             {selectedItem.desc && (
-              <p className="text-sm text-gray-600 mt-2">
+              <p className="text-sm text-right text-gray-600 mt-2">
                 {selectedItem.desc[lang]}
               </p>
             )}
 
             <div className="flex justify-between items-center mt-4 font-bold">
-              <span>₪{selectedItem.price}</span>
-
               <button
                 onClick={() => setSelectedItem(null)}
-                className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
+                className="cursor-pointer px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
               >
                 {translations[lang].workingHoursModalClose}
               </button>
+              <span>₪{selectedItem.price}</span>
             </div>
           </div>
         </>
@@ -331,7 +328,7 @@ return (
 })}
 
       {/* Footer */}
-<footer className="mt-12 border-t border-[#1111111c] text-center flex flex-col gap-4 items-center justify-center py-8 mb-3">
+<footer className="mt-12 mb-20 border border-gray-600/40 rounded w-[95%] md:w-[70%] lg:w-[60%] mx-auto border-t border-[#1111111c] text-center flex flex-col gap-4 items-center justify-center py-8 mb-3">
 <div className="w-[70%] md:w-[45%] lg:w-[40%] mx-auto flex flex-wrap justify-between mt-2">
   {data.instagram && (
     <Link
@@ -374,7 +371,7 @@ return (
 
 </div>
 
-  <Link className="p-3 underline underline-offset-2 hover:bg-white hover:text-black p-3 rounded hover:font-bold" href="/terms">{translations[lang].terms}</Link>
+  <Link className="p-3 underline underline-offset-2 hover:bg-white hover:text-black p-3 rounded font-bold transition" href="/terms">{translations[lang].terms}</Link>
         
         <p className="text-white" dir="ltr">&copy; {new Date().getFullYear()} CRTGO & {data.name[lang]}</p>
         <p className="text-white">{translations[lang].allrights}</p>
