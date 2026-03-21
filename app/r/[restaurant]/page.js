@@ -2,6 +2,7 @@ import { supabase } from "@/lib/supabase"
 
 import Template1 from "@/components/templates/template1"
 import Template2 from "@/components/templates/template2"
+import Template3 from "@/components/templates/template3"
 
 export default async function Page({ params }) {
 
@@ -23,7 +24,8 @@ export default async function Page({ params }) {
 
   const templates = {
     template1: Template1,
-    template2: Template2
+    template2: Template2,
+    template3: Template3,
   }
 
   const Template = templates[site.template] || Template1

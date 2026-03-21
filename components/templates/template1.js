@@ -203,7 +203,7 @@ if (!mounted) return null;
 <Disclosure>
   {({ open }) => (
     <>
-      <Disclosure.Button className="flex w-full justify-between bg-white px-4 py-2 text-left text-gray-900 font-medium md:shadow md:rounded-lg focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
+      <Disclosure.Button className="cursor-pointer flex w-full justify-between bg-white px-4 py-2 text-left text-gray-900 font-medium md:shadow md:rounded-lg focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
         <span>{translations[lang].workingHours}</span>
         {open ? (
           <ChevronUpIcon className="w-5 h-5 text-gray-500" />
@@ -232,7 +232,7 @@ if (!mounted) return null;
           <button
             key={section.id}
             onClick={() => scrollToSection(section.id)}
-            className="border border-black rounded font-bold px-4 py-2 transition-transform hover:scale-105 text-[#6c5e4f]"
+            className="cursor-pointer border border-black rounded font-bold px-4 py-2 transition-transform hover:scale-105 text-[#6c5e4f]"
           >
             {section.title[lang]}
           </button>
@@ -245,7 +245,7 @@ if (!mounted) return null;
           return (
             <div key={i} id={section.id} className="scroll-mt-32 w-full py-8">
               <h2 className="text-center text-[#1e394b] text-xl mb-5">{section.title[lang]}</h2>
-              <div className="flex overflow-x-auto px-5 scrollbar-none">
+              <div className="flex overflow-x-auto px-5 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] [scrollbar-gutter:stable]">
                 {section.items.map((item, idx) => (
                   <div
                     key={idx}
@@ -273,7 +273,7 @@ if (!mounted) return null;
   )}
 </div>
                       <div className="text-[#1e394b] mb-2">₪{item.price}</div>
-                      <div className="text-[#6c5e4f] text-sm overflow-auto">{item.desc[lang]}</div>
+                      <div className="w-full overflow-hidden text-[#6c5e4f] text-sm overflow-auto truncate">{item.desc[lang]}</div>
                     </div>
                   </div>
                 ))}

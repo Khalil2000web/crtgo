@@ -79,8 +79,8 @@ if (!mounted) return null;
 return (
 <>
 <div
-  className={`${lang === "ar" ? notoArabic.className : ""} bg-[#091413] text-[#B0E4CC] scroll-smooth`}
-  dir={lang === "ar" ? "rtl" : "rtl"}
+  className={`${notoArabic.className} bg-[#091413] text-[#B0E4CC] scroll-smooth`}
+  dir="rtl"
 >
 
 <header
