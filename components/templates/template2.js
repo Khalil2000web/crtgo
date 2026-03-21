@@ -64,6 +64,7 @@ useEffect(() => {
 const [mounted, setMounted] = useState(false);
 const [lang, setLang] = useState("ar"); // default Arabic
 const [isOpen, setIsOpen] = useState(false)
+const [selectedItem, setSelectedItem] = useState(null)
 
 useEffect(() => {
   setMounted(true);
@@ -214,6 +215,53 @@ return (
 </Dialog>
 
 
+<Dialog open={!!selectedItem} onClose={() => setSelectedItem(null)} className="relative z-50000">
+  <div className="fixed inset-0 bg-black/40" />
+
+  <div className="fixed inset-0 flex items-center justify-center p-4">
+    <DialogPanel className="bg-white rounded-lg w-[90vw] max-w-md overflow-hidden shadow-xl">
+
+      {selectedItem && (
+        <>
+          <div className="relative w-full h-[250px]">
+            <Image
+              src={selectedItem.img}
+              alt={selectedItem.name[lang]}
+              fill
+              className="object-cover"
+            />
+          </div>
+
+          <div className="p-4 text-black">
+            <DialogTitle className="text-lg font-bold">
+              {selectedItem.name[lang]}
+            </DialogTitle>
+
+            {selectedItem.desc && (
+              <p className="text-sm text-gray-600 mt-2">
+                {selectedItem.desc[lang]}
+              </p>
+            )}
+
+            <div className="flex justify-between items-center mt-4 font-bold">
+              <span>₪{selectedItem.price}</span>
+
+              <button
+                onClick={() => setSelectedItem(null)}
+                className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
+              >
+                {translations[lang].workingHoursModalClose}
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+
+    </DialogPanel>
+  </div>
+</Dialog>
+
+
 
 
 
@@ -241,13 +289,13 @@ return (
   if (section.type === "menu") {
     return (
       <div key={i} id={section.id} className="scroll-mt-20 w-full py-8">
-        <h2 className="text-center text-[#fff] font-bold text-xl mb-5">
+        <h2 className="text-center text-[#fff] font-bold text-xl mb-5 md:text-3xl">
           {section.title[lang]}
         </h2>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 px-5">
           {section.items.map((item, idx) => (
-            <div key={idx} className="w-full">
+            <button key={idx} onClick={() => setSelectedItem(item)} className="w-full text-left cursor-pointer" >
               <div className="relative w-full aspect-square overflow-hidden rounded-lg">
 
                 <Image
@@ -273,7 +321,7 @@ return (
                 </div>
 
               </div>
-            </div>
+            </button>
           ))}
         </div>
       </div>
