@@ -1,5 +1,15 @@
-// app/page.js
-// app/page.js
+"use client"
+
+import { useState } from 'react';
+import { translations } from './translations';
+import {Header} from '@/components/Header';
+import {Hero} from '@/components/Hero';
+import {Services} from '@/components/Services';
+import {About} from '@/components/About';
+import {Portfolio} from '@/components/Portfolio';
+import {Prices} from '@/components/Prices';
+import {Contact} from '@/components/Contact';
+import {Footer} from '@/components/Footer';
 import { Noto_Sans_Arabic, Zain } from "next/font/google";
 
 const notoArabic = Noto_Sans_Arabic({
@@ -16,13 +26,19 @@ const zain = Zain({
 });
 
 export default function Page() {
+  const [lang, setLang] = useState('ar');
+  const t = translations[lang];
+
   return (
-    <div
-      className={`flex min-h-screen items-center justify-center bg-gray-50 ${notoArabic.className}`}
-    >
-      <h1 className="text-5xl text-center">
-        مرحبًا   
-      </h1>
+    <div className="min-h-screen" dir={lang === 'ar' || lang === 'he' ? 'rtl' : 'ltr'}>
+      <Header lang={lang} setLang={setLang} t={t} />
+      <Hero lang={lang} t={t} />
+      <Services lang={lang} t={t} />
+      <About lang={lang} t={t} />
+      <Portfolio lang={lang} t={t} />
+      <Prices lang={lang} t={t} />
+      <Contact lang={lang} t={t} />
+      <Footer lang={lang} t={t} />
     </div>
   );
 }
