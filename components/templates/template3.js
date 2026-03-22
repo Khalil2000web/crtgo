@@ -294,7 +294,10 @@ return (
   const isOpen = openIndex === i;
 
   return (
-    <div key={i} className="flex flex-col gap-2 p-3 md:w-[65%] mx-auto overflow-hidden">
+    <div key={i} className={`
+        flex flex-col gap-2 p-3 md:w-[65%] mx-auto overflow-hidden rounded-md transition
+        ${isOpen ? "bg-gray-100/20 border border-gray-400" : ""}
+      `}>
 
       {/* Block */}
       <button
@@ -348,7 +351,7 @@ return (
               </div>
 
               {/* Square image */}
-              <div className="relative w-[120px] h-[120px] flex-shrink-0">
+              <div className="relative w-[120px] h-[120px] md:w-[170px] md:h-[170px] flex-shrink-0">
                 <Image
                   src={item.img}
                   alt={item.name[lang]}
