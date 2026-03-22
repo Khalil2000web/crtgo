@@ -8,6 +8,9 @@ import Script from "next/script";
 import { FaInstagram, FaFacebook, FaTiktok, FaPhoneAlt } from "react-icons/fa";
 import { RiTimeLine } from "react-icons/ri";
 
+import { Menu } from "@headlessui/react";
+import { Globe } from 'lucide-react';
+
 import { Noto_Sans_Arabic } from "next/font/google";
 
 const notoArabic = Noto_Sans_Arabic({
@@ -62,6 +65,10 @@ const [lang, setLang] = useState("ar"); // default Arabic
 const [isOpen, setIsOpen] = useState(false)
 const [selectedItem, setSelectedItem] = useState(null)
 const [openIndex, setOpenIndex] = useState(null);
+const [langMenuOpen, setLangMenuOpen] = useState(false);
+
+ const isRTL = lang === 'ar' || lang === 'he';
+
 
 useEffect(() => {
   setMounted(true);
@@ -84,12 +91,67 @@ return (
   dir="rtl"
 >
 
+  
+<div className="fixed top-0 right-0 w-full flex z-1000 items-center justify-start  gap-3 p-5">
+<button
+  onClick={() => setIsOpen(true)}
+  className="flex items-center justify-center rounded-full text-sm cursor-pointer bg-[#f2aa4c] text-black hover:bg-white p-2 hover:border-[#f2aa4c] transition border-2 font-bold border-white gap-2"
+>
+<RiTimeLine className="text-lg" /> 
+</button>
 
-<div className="overflow-hidden w-full h-[260px] relative">
+
+<div className="relative inline-block">
+  <button
+    onClick={() => setLangMenuOpen(!langMenuOpen)}
+    className="cursor-pointer flex items-center gap-2 text-gray-400 hover:text-[#f2aa4c] transition-colors"
+  >
+    <Globe size={20} />
+    <span className="text-sm text-white">{lang === 'ar' ? 'ع' : 'עב'}</span>
+  </button>
+
+  {langMenuOpen && (
+    <div className="absolute top-full mt-2 bg-white border border-gray-200  p-2 min-w-[120px] flex flex-col gap-2">
+      <button
+        onClick={() => {
+          setLang('ar');
+          setLangMenuOpen(false);
+        }}
+        className={`px-3 py-1 font-bold border-2 rounded w-full ${
+          lang === 'ar'
+            ? 'text-black cursor-pointer'
+            : 'bg-[#f2aa4c] border-white text-black hover:bg-white hover:border-[#f2aa4c]'
+        }`}
+      >
+        عربي
+      </button>
+
+      <button
+        onClick={() => {
+          setLang('he');
+          setLangMenuOpen(false);
+        }}
+        className={`px-3 py-1 font-bold border-2 rounded w-full ${
+          lang === 'he'
+           ? 'text-black cursor-pointer'
+            : 'bg-[#f2aa4c] border-white text-black hover:bg-white hover:border-[#f2aa4c]'
+        }`}
+      >
+        עברית
+      </button>
+    </div>
+  )}
+</div>
+
+
+</div>
+
+
+<div className="overflow-hidden w-full h-[320px] relative mb-6">
   <div className="flex w-max animate-header-scroll absolute">
     {[...data.headerImages].map((src, i) => (
-      <div key={i} className="flex-none w-[350px] h-[260px] relative">
-        <Image src={src} alt="" fill className="object-cover" />
+      <div key={i} className="flex-none w-[350px] h-[320px] relative">
+        <Image src={src} alt="" fill className="pointer-events-none block object-cover" />
       </div>
     ))}
   </div>
@@ -108,91 +170,16 @@ return (
 
 
 
-<div className="flex flex-col items-center justify-center mt-6">
-<button
-  onClick={() => setIsOpen(true)}
-  className="flex items-center justify-center rounded-full text-sm cursor-pointer p-2 bg-[#f2aa4c] text-black hover:bg-white hover:border-[#f2aa4c] transition border-2 font-bold border-white gap-2"
->
-<RiTimeLine className="text-lg" /> 
-<p className="pl-2 text-sm">{translations[lang].workingHours}</p>
-</button>
-
-
-
-<div className="flex justify-center gap-2 mt-4">
-<button
-  onClick={() => setLang("ar")}
-  className={`px-3 py-1 bg-[#f2aa4c] font-bold text-black border-2 border-white cursor-pointer rounded ${lang === "ar" ? "bg-white border-[#f2aa4c] text-black cursor-default" : ""}`}
->
-  عربي
-</button>
-
-<button
-  onClick={() => setLang("he")}
-  className={`px-3 py-1 bg-[#f2aa4c] font-bold text-black border-2 border-white cursor-pointer rounded ${lang === "he" ? "bg-white border-[#f2aa4c] text-black cursor-default" : ""}`}
->
-  עברית
-</button>
-</div>
-
-
-<div className="flex flex-wrap items-center justify-center gap-3 pt-3">
-
-  {data.instagram && (
-    <Link
-      href={data.instagram}
-      target="_blank"
-      className="flex items-center justify-center border-2 border-transparent w-9 h-9 rounded-md hover:bg-white hover:border-[#f2aa4c] hover:text-black transition"
-    >
-      <FaInstagram className="text-lg" />
-    </Link>
-  )}
-
-  {data.facebook && (
-    <Link
-      href={data.facebook}
-      target="_blank"
-      className="flex items-center justify-center border-2 border-transparent w-9 h-9 rounded-md hover:bg-white hover:border-[#f2aa4c] hover:text-black transition"
-    >
-      <FaFacebook className="text-lg" />
-    </Link>
-  )}
-
-  {data.tiktok && (
-    <Link
-      href={data.tiktok}
-      target="_blank"
-      className="flex items-center justify-center border-2 border-transparent w-9 h-9 rounded-md hover:bg-white hover:border-[#f2aa4c] hover:text-black transition"
-    >
-      <FaTiktok className="text-lg" />
-    </Link>
-  )}
-
-  {data.phone && (
-    <Link
-      href={`tel:${data.phone}`}
-      className="flex items-center justify-center border-2 border-transparent w-9 h-9 rounded-md hover:bg-white hover:border-[#f2aa4c] hover:text-black transition"
-    >
-      <FaPhoneAlt className="text-md" />
-    </Link>
-  )}
-
-</div>
-
-</div>
-
-
-
 <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="relative z-50000">
   <div className="fixed inset-0 bg-black/40" />
 
   <div className="fixed inset-0 flex items-center justify-center p-4">
-    <DialogPanel className="bg-white p-6 rounded-md w-[70vh] md:w-[50vh] min-h-[350px] shadow-lg flex flex-col">
+    <DialogPanel className="bg-[#101820] text-white border border-[#f2aa4c] p-6 rounded-md w-[70vh] md:w-[50vh] min-h-[350px] shadow-lg flex flex-col ">
       <DialogTitle className="text-[1.25rem] pb-3 text-right font-bold">{translations[lang].workingHours}</DialogTitle>
 
         <ul className="space-y-1 text-gray-700">
 {Object.entries(data.hours).map(([day, time]) => (
-  <li key={day} className="flex justify-between">
+  <li key={day} className="flex justify-between text-gray-300">
     <span className="font-bold">{time}</span>
     <span className="font-bold">{translations[lang].days[day]}</span>
   </li> 
@@ -202,7 +189,7 @@ return (
 <div className="mt-auto flex justify-center">
   <button
     onClick={() => setIsOpen(false)}
-    className="px-3 py-1 bg-gray-200 rounded cursor-pointer hover:bg-gray-300 transition font-bold border border-gray-400"
+    className="bg-[#f2aa4c] hover:bg-[#fff] hover:text-black border-2 text-black hover:border-[#f2aa4c] px-3 py-1 rounded cursor-pointer transition font-bold"
   >
     {translations[lang].workingHoursModalClose}
   </button>
@@ -258,6 +245,51 @@ return (
 </Dialog>
 
 
+
+<div className="flex flex-col fixed right-[20px] bottom-[20px] z-100 flex-wrap items-center justify-center gap-1">
+
+  {data.instagram && (
+    <Link
+      href={data.instagram}
+      target="_blank"
+      className="flex items-center justify-center border-2 border-transparent w-9 h-9 rounded-md hover:bg-white hover:border-[#f2aa4c] hover:text-black transition"
+    >
+      <FaInstagram className="text-lg" />
+    </Link>
+  )}
+
+  {data.facebook && (
+    <Link
+      href={data.facebook}
+      target="_blank"
+      className="flex items-center justify-center border-2 border-transparent w-9 h-9 rounded-md hover:bg-white hover:border-[#f2aa4c] hover:text-black transition"
+    >
+      <FaFacebook className="text-lg" />
+    </Link>
+  )}
+
+  {data.tiktok && (
+    <Link
+      href={data.tiktok}
+      target="_blank"
+      className="flex items-center justify-center border-2 border-transparent w-9 h-9 rounded-md hover:bg-white hover:border-[#f2aa4c] hover:text-black transition"
+    >
+      <FaTiktok className="text-lg" />
+    </Link>
+  )}
+
+  {data.phone && (
+    <Link
+      href={`tel:${data.phone}`}
+      className="flex items-center justify-center border-2 border-transparent w-9 h-9 rounded-md hover:bg-white hover:border-[#f2aa4c] hover:text-black transition"
+    >
+      <FaPhoneAlt className="text-md" />
+    </Link>
+  )}
+
+</div>
+
+
 {sections.map((section, i) => {
   const isOpen = openIndex === i;
 
@@ -267,7 +299,7 @@ return (
       {/* Block */}
       <button
         onClick={() => setOpenIndex(isOpen ? null : i)}
-        className="relative flex items-center w-full h-[140px] px-4 overflow-hidden cursor-pointer transition"
+        className="relative flex items-center w-full h-[190px] px-4 overflow-hidden cursor-pointer transition"
       >
 
         <div className="absolute left-0 top-0 h-full w-[45%]">
@@ -323,7 +355,7 @@ return (
               </div>
 
               {/* Square image */}
-              <div className="relative w-[90px] h-[90px] flex-shrink-0">
+              <div className="relative w-[120px] h-[120px] flex-shrink-0">
                 <Image
                   src={item.img}
                   alt={item.name[lang]}
@@ -350,48 +382,7 @@ return (
 
 {/* Footer */}
 <footer className="mt-12 mb-20 border border-gray-600/40 rounded w-[95%] md:w-[70%] lg:w-[60%] mx-auto border-t border-[#1111111c] text-center flex flex-col gap-4 items-center justify-center py-8 mb-3">
-<div className="w-[50%] md:w-[40%] mx-auto flex flex-wrap justify-between mt-2">
 
-  {data.instagram && (
-    <Link
-      href={data.instagram}
-      target="_blank"
-      className="flex items-center justify-center border-2 border-transparent w-9 h-9 rounded-md hover:bg-white hover:border-[#f2aa4c] hover:text-black transition"
-    >
-      <FaInstagram className="text-lg" />
-    </Link>
-  )}
-
-  {data.facebook && (
-    <Link
-      href={data.facebook}
-      target="_blank"
-      className="flex items-center justify-center border-2 border-transparent w-9 h-9 rounded-md hover:bg-white hover:border-[#f2aa4c] hover:text-black transition"
-    >
-      <FaFacebook className="text-lg" />
-    </Link>
-  )}
-
-  {data.tiktok && (
-    <Link
-      href={data.tiktok}
-      target="_blank"
-      className="flex items-center justify-center border-2 border-transparent w-9 h-9 rounded-md hover:bg-white hover:border-[#f2aa4c] hover:text-black transition"
-    >
-      <FaTiktok className="text-lg" />
-    </Link>
-  )}
-
-  {data.phone && (
-    <Link
-      href={`tel:${data.phone}`}
-      className="flex items-center justify-center border-2 border-transparent w-9 h-9 rounded-md hover:bg-white hover:border-[#f2aa4c] hover:text-black transition"
-    >
-      <FaPhoneAlt className="text-md" />
-    </Link>
-  )}
-
-</div>
 
   <Link className="underline underline-offset-4 hover:bg-white hover:border-[#f2aa4c] border-2 border-transparent hover:text-black p-3 rounded font-bold transition" href="/terms">{translations[lang].terms}</Link>
         

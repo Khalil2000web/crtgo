@@ -41,7 +41,7 @@ export function Header({ lang, setLang, t }) {
                 className="cursor-pointer flex items-center gap-2 text-gray-700 hover:text-orange-600 transition-colors"
               >
                 <Globe size={20} />
-                <span className="text-sm">{lang === 'ar' ? 'ع' : 'עב'}</span>
+                <span className="text-sm text-black">{lang === 'ar' ? 'ع' : 'עב'}</span>
               </button>
               
               {langMenuOpen && (
