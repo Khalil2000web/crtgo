@@ -231,7 +231,7 @@ return (
           </div>
 
           <div className="p-4 text-black">
-            <DialogTitle className="flex items-center justify-start gap-2 text-lg text-right font-bold">
+            <DialogTitle className="flex items-center justify-end gap-2 text-lg text-right font-bold">
               
             {selectedItem.spicy && (
                       <span className="w-4 h-4 flex items-center justify-center">
