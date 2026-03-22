@@ -383,7 +383,7 @@ return (
 <footer className="mt-12 mb-20 border border-gray-600/40 rounded w-[95%] md:w-[70%] lg:w-[60%] mx-auto border-t border-[#1111111c] text-center flex flex-col gap-4 items-center justify-center py-8 mb-3">
 
 
-  <Link className="underline underline-offset-4 hover:bg-white hover:border-[#f2aa4c] border-2 border-transparent hover:text-black p-3 rounded font-bold transition" href="/terms">{translations[lang].terms}</Link>
+  <Link className="underline underline-offset-4 hover:bg-white hover:border-[#f2aa4c] border-2 border-transparent hover:text-black p-3 rounded transition" href="/terms">{translations[lang].terms}</Link>
         
         <p className="text-white" dir="ltr">&copy; {new Date().getFullYear()} CRTGO & {data.name[lang]}</p>
         <p className="text-white">{translations[lang].allrights}</p>
