@@ -324,7 +324,7 @@ return (
       {/* Items row */}
       <div
         className={`transition-all duration-300 overflow-hidden ${
-          isOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+          isOpen ? "max-h-[1200px] opacity-100" : "max-h-0 opacity-0"
         }`}
       >
         <div className="flex flex-col gap-4 p-4 last:mb-15 last:pb-15  last:border-b-2 last:border-gray-700">
