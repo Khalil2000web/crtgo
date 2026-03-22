@@ -28,3 +28,18 @@ body {
 .asw-footer {
   display: none;
 }
+
+
+
+/* global.css or module.css */
+@keyframes header-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-33.333%); } /* Move by one set of images */
+}
+
+.animate-header-scroll {
+  animation: header-scroll 5s linear infinite;
+}
+
+
+

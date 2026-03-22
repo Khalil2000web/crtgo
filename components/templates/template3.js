@@ -54,13 +54,14 @@ const translations = {
 
 export default function Template3({ data }) {
 useEffect(() => {
-    document.body.style.backgroundColor = "#091413";
+    document.body.style.backgroundColor = "#101820";
   }, []);
 
 const [mounted, setMounted] = useState(false);
 const [lang, setLang] = useState("ar"); // default Arabic
 const [isOpen, setIsOpen] = useState(false)
 const [selectedItem, setSelectedItem] = useState(null)
+const [openIndex, setOpenIndex] = useState(null);
 
 useEffect(() => {
   setMounted(true);
@@ -79,43 +80,60 @@ if (!mounted) return null;
 return (
 <>
 <div
-  className={`${notoArabic.className} bg-[#091413] text-[#B0E4CC] scroll-smooth`}
+  className={`${notoArabic.className} text-[#f2aa4c] scroll-smooth`}
   dir="rtl"
 >
 
-<header
-  dir="ltr"
-  className="relative border-b border-white/20 w-full h-[420px] flex flex-col items-center justify-center text-center"
->
-  {/* Background image with 30% opacity */}
-  <div
-    className="absolute inset-0 bg-center bg-cover opacity-30"
-    style={{ backgroundImage: `url(${data.headerimg})` }}
-  ></div>
 
-  {/* Content on top */}
-  <div className="relative z-10 flex flex-col items-center justify-center text-center w-full h-full">
-<div className="w-[190px] h-[190px] rounded-full overflow-hidden border border-white">
-  <Image
-    src={data.logo}
-    alt="logo"
-    width={190}
-    height={190}
-    className="object-cover pointer-events-none"
-  />
+<div className="overflow-hidden w-full h-[260px] relative">
+  <div className="flex w-max animate-header-scroll absolute">
+    {[...data.headerImages].map((src, i) => (
+      <div key={i} className="flex-none w-[350px] h-[260px] relative">
+        <Image src={src} alt="" fill className="object-cover" />
+      </div>
+    ))}
+  </div>
+
+  {/* Optional center logo */}
+<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+  {/* Circular Logo */}
+  <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-white relative">
+    <Image src={data.logo} alt="Logo" fill className="object-cover" />
+  </div>
+
+  {/* Name below the logo */}
+  <h1 className="text-xl text-[#f2aa4c] font-bold mt-4">{data.name[lang]}</h1>
 </div>
-    <h2 className="text-lg text-white font-bold p-3">{data.name[lang]}</h2>
-    <button
-      onClick={() => setIsOpen(true)}
-      className="flex items-center justify-center rounded-full text-sm cursor-pointer p-2 hover:bg-white hover:text-black transition border font-bold border-gray"
-    >
-      <RiTimeLine className="text-lg" /> 
-      <p className="pl-2 text-sm">{translations[lang].workingHours}</p>
-    </button>
+</div>
 
 
 
+<div className="flex flex-col items-center justify-center mt-6">
+<button
+  onClick={() => setIsOpen(true)}
+  className="flex items-center justify-center rounded-full text-sm cursor-pointer p-2 bg-[#f2aa4c] text-black hover:bg-white hover:border-[#f2aa4c] transition border-2 font-bold border-white gap-2"
+>
+<RiTimeLine className="text-lg" /> 
+<p className="pl-2 text-sm">{translations[lang].workingHours}</p>
+</button>
 
+
+
+<div className="flex justify-center gap-2 mt-4">
+<button
+  onClick={() => setLang("ar")}
+  className={`px-3 py-1 bg-[#f2aa4c] font-bold text-black border-2 border-white cursor-pointer rounded ${lang === "ar" ? "bg-white border-[#f2aa4c] text-black cursor-default" : ""}`}
+>
+  عربي
+</button>
+
+<button
+  onClick={() => setLang("he")}
+  className={`px-3 py-1 bg-[#f2aa4c] font-bold text-black border-2 border-white cursor-pointer rounded ${lang === "he" ? "bg-white border-[#f2aa4c] text-black cursor-default" : ""}`}
+>
+  עברית
+</button>
+</div>
 
 
 <div className="flex flex-wrap items-center justify-center gap-3 pt-3">
@@ -124,7 +142,7 @@ return (
     <Link
       href={data.instagram}
       target="_blank"
-      className="flex items-center justify-center w-9 h-9 rounded-md hover:bg-gray-50 hover:text-black transition"
+      className="flex items-center justify-center border-2 border-transparent w-9 h-9 rounded-md hover:bg-white hover:border-[#f2aa4c] hover:text-black transition"
     >
       <FaInstagram className="text-lg" />
     </Link>
@@ -134,7 +152,7 @@ return (
     <Link
       href={data.facebook}
       target="_blank"
-      className="flex items-center justify-center w-9 h-9 rounded-md hover:bg-gray-50 hover:text-black transition"
+      className="flex items-center justify-center border-2 border-transparent w-9 h-9 rounded-md hover:bg-white hover:border-[#f2aa4c] hover:text-black transition"
     >
       <FaFacebook className="text-lg" />
     </Link>
@@ -144,7 +162,7 @@ return (
     <Link
       href={data.tiktok}
       target="_blank"
-      className="flex items-center justify-center w-9 h-9 rounded-md hover:bg-gray-50 hover:text-black transition"
+      className="flex items-center justify-center border-2 border-transparent w-9 h-9 rounded-md hover:bg-white hover:border-[#f2aa4c] hover:text-black transition"
     >
       <FaTiktok className="text-lg" />
     </Link>
@@ -153,35 +171,16 @@ return (
   {data.phone && (
     <Link
       href={`tel:${data.phone}`}
-      className="flex items-center justify-center w-9 h-9 rounded-md hover:bg-gray-50 hover:text-black transition"
+      className="flex items-center justify-center border-2 border-transparent w-9 h-9 rounded-md hover:bg-white hover:border-[#f2aa4c] hover:text-black transition"
     >
-      <FaPhoneAlt className="text-lg" />
+      <FaPhoneAlt className="text-md" />
     </Link>
   )}
 
 </div>
 
-
-
-<div className="flex justify-center gap-2 mt-4">
-
-<button
-  onClick={() => setLang("ar")}
-  className={`px-3 py-1 cursor-pointer rounded border ${lang === "ar" ? "bg-white text-black cursor-default" : ""}`}
->
-  عربي
-</button>
-
-<button
-  onClick={() => setLang("he")}
-  className={`px-3 py-1 cursor-pointer rounded border ${lang === "he" ? "bg-white text-black cursor-default" : ""}`}
->
-  עברית
-</button>
-
 </div>
-</div>
-</header>
+
 
 
 <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="relative z-50000">
@@ -259,82 +258,105 @@ return (
 </Dialog>
 
 
-
-
-
-<div className="flex flex-wrap justify-center gap-5 py-6 mt-3">
-  {sections.map((section) => (
-    <button
-      key={section.id}
-      onClick={() => scrollToSection(section.id)}
-      className="relative border border-white rounded-full cursor-pointer w-[110px] h-[110px] flex items-center justify-center font-bold px-4 py-2 transition-transform hover:scale-105 text-white overflow-hidden"
-    >
-      {/* Background image overlay */}
-      <div
-        className="absolute inset-0 bg-cover bg-center opacity-50"
-        style={{ backgroundImage: `url(${section.image})` }}
-      ></div>
-
-      {/* Text on top */}
-      <span className="relative z-10">{section.title[lang]}</span>
-    </button>
-  ))}
-</div>
-
-
 {sections.map((section, i) => {
-  if (section.type === "menu") {
-    return (
-      <div key={i} id={section.id} className="scroll-mt-20 w-full py-8">
-        <h2 className="text-center text-[#fff] font-bold text-xl mb-5 md:text-3xl">
+  const isOpen = openIndex === i;
+
+  return (
+    <div key={i} className="flex flex-col gap-2 p-3 md:w-[65%] mx-auto overflow-hidden">
+
+      {/* Block */}
+      <button
+        onClick={() => setOpenIndex(isOpen ? null : i)}
+        className="relative flex items-center w-full h-[140px] px-4 overflow-hidden cursor-pointer transition"
+      >
+
+        <div className="absolute left-0 top-0 h-full w-[45%]">
+          <Image
+            src={section.image}
+            alt="Section Image"
+            fill
+            className="object-cover pointer-events-none"
+            style={{
+              maskImage: "linear-gradient(to right, black 60%, transparent)",
+              WebkitMaskImage: "linear-gradient(to right, black 10%, transparent)",
+            }}
+          />
+        </div>
+
+        <span className="relative z-10 text-right font-semibold">
           {section.title[lang]}
-        </h2>
+        </span>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 px-5">
+      </button>
+
+      {/* Items row */}
+      <div
+        className={`transition-all duration-300 overflow-hidden ${
+          isOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <div className="flex flex-col gap-4 p-4 last:mb-15 last:pb-15  last:border-b-2 last:border-gray-700">
+
           {section.items.map((item, idx) => (
-            <button key={idx} onClick={() => setSelectedItem(item)} className="w-full text-left cursor-pointer" >
-              <div className="relative w-full aspect-square overflow-hidden rounded-lg">
+            <div key={idx} className="flex items-start justify-between">
 
+              {/* Text */}
+              <div className="flex flex-col gap-1">
+  <p className="text-right text-md flex flex-row items-center justify center gap-2">
+    {item.name[lang]}
+                    
+    {item.spicy && (
+    <span className="w-5 h-5 flex-shrink-0 ">
+      <svg 
+        xmlns="http://www.w3.org/2000/svg" 
+        viewBox="0 0 512 512" 
+        fill="#e22400" 
+        className="w-full h-full"
+      >
+        <path d="M207.375 13.78v.064c83.385 68.488-50.732 105.97-37.22 175.22c-20.55-13.762-28.066-46.66-8.78-74.97c-51.085 21.935-73.42 51.99-72.156 97.562c.945 34.13 14.638 61.58 35.843 82.188c-9.787-27.448-12.016-55.74-5.188-79.813c35.742 49.332 137.785-19.994 147.094-79.28c-.044 63.674 63.996 118.35 112.717 52.375c8.932 36.97 6.638 75.307-3.218 105.688c19.407-20.337 31.706-47.33 32.374-81.157c.93-47.127-21.048-90.8-62.72-112.75c18.15 38.878-.498 65.598-43.655 83.75c40.28-67.494 16.386-154.454-95.095-168.875zm42.938 226.314c-5.97-.086-12.564 2.295-20.657 8.375c-38.238 28.725-88.54 77.01-99.156 108.718c-18.667-4.37-43.156 2.323-43.156 20.53c0 2.01.32 3.89.875 5.626c-9.91-.4-20.22 3.9-20.22 13.03c0 16.998 35.74 17.686 38.063 1.657c10.356 2.978 22.947 2.34 32.218-2.03c-.75 1.842-1.155 3.867-1.155 6.094c0 22.752 42.915 25.947 54.25 9.094c9.533 6.947 29.795 4.92 32.844-6.25c15.97 1.403 32.385 1.755 48.436.968c8.543 5.77 24.793 4.8 30.625-3c12.788-1.938 25.004-4.72 36.158-8.406c1.9 16.216 38.093 15.92 38.093-1.344c0-.75-.047-1.47-.186-2.156c11.238 3.032 26.594-1 26.594-12.25c0-11.025-15.614-15.103-26.875-12.03c.36-28.628-58.605-80.767-105.063-116.595c-7.39-5.698-14.014-9.92-21.688-10.03zM440 352.5c-9.547-.042-19.094 4.28-19.094 13.063c0 17.567 38.188 17.727 38.188 0c0-8.617-9.547-13.02-19.094-13.063zm-403.344 10c-9.547-.042-19.093 4.28-19.093 13.063c0 17.567 38.187 17.727 38.187 0c0-8.616-9.547-13.02-19.094-13.063zm430.563 20.406c-9.548-.042-19.095 4.28-19.095 13.063c0 17.566 38.188 17.725 38.188 0c0-8.618-9.547-13.022-19.094-13.064zm-49.69 25.438c-10.747-.047-21.5 4.8-21.5 14.687c0 19.776 43 19.955 43 0c0-9.7-10.75-14.64-21.5-14.686zm-79.967 2.97c-9.548-.02-19.094 4.385-19.094 13.248c0 12.037 18.638 15.825 29.874 11.032c9.403 8.896 34.72 6.462 34.72-7.844c-.002-12.274-18.61-16.01-29.845-11.125c-3.628-3.506-9.637-5.3-15.658-5.313zm-87.22 1.623c-9.546-.04-19.093 4.248-19.093 13.032c0 17.566 38.188 17.725 38.188 0c0-8.618-9.547-12.99-19.094-13.033zm-129.124 14.72c-11.25-.024-22.5 5.12-22.5 15.562c0 12.422 16.83 17.38 29.905 14.624c8.686 9.834 35.5 7.69 35.5-7.03c0-9.57-11.34-13.963-21.656-13.127c-3.226-6.658-12.237-10.012-21.25-10.03zM294.75 439c-8.405-.037-16.8 2.873-20.25 8.78c-14.795-4.1-35.25 1.04-35.25 15.783c0 21.294 42.68 23.124 49.313 5c12.56 2.32 28.093-2.493 28.093-14.594c0-9.88-10.958-14.922-21.906-14.97zm-97 22.656c-10.748-.047-21.47 4.8-21.47 14.688c0 19.776 42.97 19.955 42.97 0c0-9.7-10.752-14.64-21.5-14.688zm228.125 1.406c-9.547-.04-19.094 4.28-19.094 13.063c0 17.567 38.19 17.726 38.19 0c0-8.616-9.548-13.02-19.095-13.063z"/>
+      </svg>
+    </span>
+  )}
+  </p>
+                <p className="text-md font-bold">₪{item.price}</p>
+                <p className="text-sm text-gray-400">{item.desc[lang]}</p>
+              </div>
+
+              {/* Square image */}
+              <div className="relative w-[90px] h-[90px] flex-shrink-0">
                 <Image
                   src={item.img}
                   alt={item.name[lang]}
                   fill
-                  className="object-cover"
+                  className="object-cover rounded-md pointer-events-none"
                 />
-
-                {/* Bottom overlay */}
-                <div className="absolute bottom-0 left-0 right-0 bg-black/70 text-white text-sm flex justify-between items-center px-3 py-2 h-[40px]">
-                  <div className="flex items-center gap-1 font-semibold text-right">
-                  <span className="font-bold">{item.name[lang]}</span>
-
-                    {item.spicy && (
-                      <span className="w-4 h-4 flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="24" height="24"><path fill="#de5323" d="M120.74 54.44c.04 1.58-.01 5.59-4.04 14.85c-5.21 11.95-11.17 19.9-14.98 23.7c-3.96 4.78-16.12 18.16-36.47 22.14c-4.69.92-27.32 5.42-43.5-8.33C19.6 104.95 10.87 97.32 10 86c-.36-4.69.56-10.8 2.91-11.33c2.77-.63 4.21 7.23 11.98 12.85c.97.7 9.59 6.75 20.32 4.69c9.76-1.87 15.27-9.3 17.45-12.24c4.93-6.65 6.59-13.82 8.33-21.36c2.01-8.66 2.18-15.46 7.81-21.36c1.06-1.11 2.06-2.14 3.73-3.04c5.69-3.06 12.01-.76 20.84 2.6c8.46 3.23 13.66 5.29 16.06 10.59c1.19 2.62 1.26 5.03 1.31 7.04"/><path fill="#a0b632" d="M82.84 33.8c1.98-1.03 5.01-2.25 9.44-2.21c.93.01 2.05.05 3.33.19c1.1.12 5.3-2.33 6.2-3.77c.82-1.31 1.52-2.7 2.32-4.17c.98-1.79 2.52-4.87 2.7-6.62c.37-3.66-.41-7.81-7.02-6.88c-.82.11-2.73 1.18-3.28-.28c-1.12-2.93 4.86-5.09 8.87-3.21c4.47 2.1 6.19 7.7 6.43 8.92c.61 2.97-.07 5.44-1.39 10.24c-.53 1.94-.91 3.39-1.31 4.94c-.58 2.28.46 5.22 1.23 5.67c4.82 2.77 7.09 6.03 8.15 7.93c1.59 2.85 2.94 7.17 1.95 7.81c-.6.39-2-.62-2.44-.94c-1.43-1.04-1.45-1.88-2.44-2.83c-1.57-1.51-4.11-1.85-5.93-1.5c-2.64.51-2.98 2.48-4.49 2.21c-1.78-.31-1.44-3.11-4.56-5.53c-1.6-1.25-3.15-1.64-3.58-1.74a9.2 9.2 0 0 0-3.97-.02c-2.19.47-2.4 1.37-4.1 1.43c-1.43.05-3.18-.52-3.39-1.43c-.19-.84 1.07-1.25 1.24-2.8c.02-.18.14-1.47-.65-2.28c-.69-.7-1.73-.71-3.54-.72c-1.66-.01-2.35.23-2.47-.04c-.19-.45 1.45-1.72 2.7-2.37"/><path fill="#fff" d="M76.37 75.84c-.44-.03-.89-.16-1.28-.43a2.61 2.61 0 0 1-.74-3.61c1.96-2.97 2.55-7.71 3.03-11.51c.28-2.2.52-4.1.97-5.63c1.5-5.06 5.05-6.67 5.45-6.83a2.603 2.603 0 0 1 2.04 4.79c-.14.07-1.73.91-2.5 3.52c-.33 1.13-.56 2.92-.8 4.81c-.55 4.34-1.23 9.75-3.85 13.73c-.53.79-1.42 1.21-2.32 1.16M67.4 89.69a2.59 2.59 0 0 1-2.25-1.47c-.63-1.3-.08-2.85 1.21-3.48c1.52-.74 3.04-3.29 3.64-4.73a2.6 2.6 0 0 1 3.4-1.4a2.6 2.6 0 0 1 1.41 3.4c-.23.57-2.4 5.59-6.19 7.42c-.39.19-.81.27-1.22.26"/></svg>
-                      </span>
-                    )}
-
-                  </div>
-                  <span className="font-bold">₪{item.price}</span>
-                </div>
-
               </div>
-            </button>
+
+            </div>
           ))}
+
         </div>
       </div>
-    )
-  }
-  return null
+
+    </div>
+  );
 })}
 
-      {/* Footer */}
+
+
+
+
+
+
+{/* Footer */}
 <footer className="mt-12 mb-20 border border-gray-600/40 rounded w-[95%] md:w-[70%] lg:w-[60%] mx-auto border-t border-[#1111111c] text-center flex flex-col gap-4 items-center justify-center py-8 mb-3">
-<div className="w-[70%] md:w-[45%] lg:w-[40%] mx-auto flex flex-wrap justify-between mt-2">
+<div className="w-[50%] md:w-[40%] mx-auto flex flex-wrap justify-between mt-2">
+
   {data.instagram && (
     <Link
       href={data.instagram}
       target="_blank"
-      className="p-2 flex items-center justify-center w-10 h-10 rounded-md hover:bg-white hover:text-black transition"
+      className="flex items-center justify-center border-2 border-transparent w-9 h-9 rounded-md hover:bg-white hover:border-[#f2aa4c] hover:text-black transition"
     >
       <FaInstagram className="text-lg" />
     </Link>
@@ -344,7 +366,7 @@ return (
     <Link
       href={data.facebook}
       target="_blank"
-      className="p-2 flex items-center justify-center w-10 h-10 rounded-md hover:bg-white hover:text-black transition"
+      className="flex items-center justify-center border-2 border-transparent w-9 h-9 rounded-md hover:bg-white hover:border-[#f2aa4c] hover:text-black transition"
     >
       <FaFacebook className="text-lg" />
     </Link>
@@ -354,7 +376,7 @@ return (
     <Link
       href={data.tiktok}
       target="_blank"
-      className="p-2 flex items-center justify-center w-10 h-10 rounded-md hover:bg-white hover:text-black transition"
+      className="flex items-center justify-center border-2 border-transparent w-9 h-9 rounded-md hover:bg-white hover:border-[#f2aa4c] hover:text-black transition"
     >
       <FaTiktok className="text-lg" />
     </Link>
@@ -363,19 +385,19 @@ return (
   {data.phone && (
     <Link
       href={`tel:${data.phone}`}
-      className="p-2 flex items-center justify-center w-10 h-10 rounded-md hover:bg-white hover:text-black transition"
+      className="flex items-center justify-center border-2 border-transparent w-9 h-9 rounded-md hover:bg-white hover:border-[#f2aa4c] hover:text-black transition"
     >
-      <FaPhoneAlt className="text-lg" />
+      <FaPhoneAlt className="text-md" />
     </Link>
   )}
 
 </div>
 
-  <Link className="p-3 underline underline-offset-2 hover:bg-white hover:text-black p-3 rounded font-bold transition" href="/terms">{translations[lang].terms}</Link>
+  <Link className="underline underline-offset-4 hover:bg-white hover:border-[#f2aa4c] border-2 border-transparent hover:text-black p-3 rounded font-bold transition" href="/terms">{translations[lang].terms}</Link>
         
         <p className="text-white" dir="ltr">&copy; {new Date().getFullYear()} CRTGO & {data.name[lang]}</p>
         <p className="text-white">{translations[lang].allrights}</p>
-        <p className="text-white" dir="ltr">CREATED BY <a href="/">CRTGO, WEB SERVICES ❤️</a></p>
+        <p className="text-white" dir="ltr">CREATED BY <a className="text-[#f2aa4c] hover:underline underline-offset-4" href="/">CRTGO, WEB SERVICES ❤️</a></p>
       </footer>
 
     </div>
