@@ -252,7 +252,7 @@ return (
     <Link
       href={data.instagram}
       target="_blank"
-      className="flex items-center justify-center border-2 border-transparent w-9 h-9 rounded-md hover:bg-white hover:border-[#f2aa4c] hover:text-black transition"
+      className="flex items-center justify-center border-2 border-transparent w-9 h-9 rounded-md text-white hover:bg-white hover:border-[#f2aa4c] hover:text-black transition"
     >
       <FaInstagram className="text-lg" />
     </Link>
@@ -262,7 +262,8 @@ return (
     <Link
       href={data.facebook}
       target="_blank"
-      className="flex items-center justify-center border-2 border-transparent w-9 h-9 rounded-md hover:bg-white hover:border-[#f2aa4c] hover:text-black transition"
+      className="flex items-center justify-center border-2 border-transparent w-9 h-9 rounded-md text-white hover:bg-white hover:border-[#f2aa4c] hover:text-black transition"
+
     >
       <FaFacebook className="text-lg" />
     </Link>
@@ -272,7 +273,8 @@ return (
     <Link
       href={data.tiktok}
       target="_blank"
-      className="flex items-center justify-center border-2 border-transparent w-9 h-9 rounded-md hover:bg-white hover:border-[#f2aa4c] hover:text-black transition"
+      className="flex items-center justify-center border-2 border-transparent w-9 h-9 rounded-md text-white hover:bg-white hover:border-[#f2aa4c] hover:text-black transition"
+
     >
       <FaTiktok className="text-lg" />
     </Link>
@@ -281,7 +283,8 @@ return (
   {data.phone && (
     <Link
       href={`tel:${data.phone}`}
-      className="flex items-center justify-center border-2 border-transparent w-9 h-9 rounded-md hover:bg-white hover:border-[#f2aa4c] hover:text-black transition"
+      className="flex items-center justify-center border-2 border-transparent w-9 h-9 rounded-md text-white hover:bg-white hover:border-[#f2aa4c] hover:text-black transition"
+
     >
       <FaPhoneAlt className="text-md" />
     </Link>
@@ -295,14 +298,14 @@ return (
 
   return (
     <div key={i} className={`
-        flex flex-col gap-2 p-3 md:w-[65%] mx-auto overflow-hidden rounded-md transition
+        flex flex-col gap-2 p-3 w-[90%] md:w-[65%] mx-auto overflow-hidden rounded-md transition
         ${isOpen ? "bg-gray-100/20 border border-gray-400" : ""}
       `}>
 
       {/* Block */}
       <button
         onClick={() => setOpenIndex(isOpen ? null : i)}
-        className="relative flex items-center w-full h-[190px] px-4 overflow-hidden cursor-pointer transition"
+        className="relative flex items-center w-full h-[190px] px-4 overflow-hidden cursor-pointer rounded-[4px] transition"
       >
 
         <div className="absolute left-0 top-0 h-full w-[45%]">
@@ -327,10 +330,10 @@ return (
       {/* Items row */}
       <div
         className={`transition-all duration-300 overflow-hidden ${
-          isOpen ? "max-h-[1200px] opacity-100" : "max-h-0 opacity-0"
+          isOpen ? "max-h-[1600px] opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="flex flex-col gap-4 p-4 last:mb-15 last:pb-15  last:border-b-2 last:border-gray-700">
+        <div className="flex flex-col gap-6 p-4 last:pb-8 mb-12 last:border-b-0 ">
 
           {section.items.map((item, idx) => (
             <div key={idx} className="flex items-start justify-between">
@@ -351,7 +354,7 @@ return (
               </div>
 
               {/* Square image */}
-              <div className="relative w-[120px] h-[120px] md:w-[170px] md:h-[170px] flex-shrink-0">
+              <div className="relative w-[140px] h-[140px] md:w-[180px] md:h-[180px] flex-shrink-0">
                 <Image
                   src={item.img}
                   alt={item.name[lang]}
