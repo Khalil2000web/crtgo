@@ -159,7 +159,7 @@ return (
   {/* Optional center logo */}
   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
     <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-white relative">
-      <Image src={data.logo} alt="Logo" fill className="object-cover" />
+      <Image src={data.logo} alt="Logo" fill className="pointer-events-none object-cover" />
     </div>
 
     <h1 className="text-xl text-[#f2aa4c] font-bold mt-4">{data.name[lang]}</h1>
@@ -296,7 +296,7 @@ return (
 
   return (
     <div key={i} className={`
-        flex flex-col gap-6 p-3 w-[90%] md:w-[65%] mx-auto mb-12 overflow-hidden rounded-md transition
+        flex flex-col gap-3 p-3 w-[90%] md:w-[65%] mx-auto mb-12 overflow-hidden rounded-md transition
         ${isOpen ? "border border-gray-400" : ""}
       `}>
 
