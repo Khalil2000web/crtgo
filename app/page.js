@@ -10,7 +10,7 @@ import {Portfolio} from '@/components/Portfolio';
 import {Prices} from '@/components/Prices';
 import {Contact} from '@/components/Contact';
 import {Footer} from '@/components/Footer';
-import TemplatesPreview from "@/components/TemplatesPreview";
+import {TemplatesPreview} from "@/components/TemplatesPreview";
 import { Noto_Sans_Arabic, Zain } from "next/font/google";
 
 const notoArabic = Noto_Sans_Arabic({
@@ -27,21 +27,6 @@ const zain = Zain({
 });
 
 
-const templates = [
-  {
-    id: 1,
-    name: "Elegant Restaurant",
-    image: "/templates/template1.jpg",
-    description: "Clean elegant restaurant design",
-  },
-  {
-    id: 2,
-    name: "Modern Cafe",
-    image: "/templates/template2.jpg",
-    description: "Minimal modern cafe layout",
-  },
-];
-
 export default function Page() {
   const [lang, setLang] = useState('ar');
   const t = translations[lang];
@@ -53,7 +38,7 @@ export default function Page() {
       <Services lang={lang} t={t} />
       <About lang={lang} t={t} />
       <Portfolio lang={lang} t={t} />
-      <TemplatesPreview templates={templates} />
+      <TemplatesPreview />
       <Prices lang={lang} t={t} />
       <Contact lang={lang} t={t} />
       <Footer lang={lang} t={t} />
