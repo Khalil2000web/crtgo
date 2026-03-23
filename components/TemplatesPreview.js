@@ -55,12 +55,12 @@ export function TemplatesPreview({ lang, t }) {
 <div className="grid md:grid-cols-3 gap-8">
   {projects.map((project, index) => (
     <Link key={index} href={project.link} className="group">
-      
-      {/* Card */}
+
+      {/* Preview Card */}
       <div className="overflow-hidden rounded-xl shadow-md hover:shadow-xl transition bg-white">
 
-        {/* Screenshot (16:9 like YouTube/video) */}
-        <div className="relative aspect-video w-full overflow-hidden">
+        {/* 9:16 Template Screenshot */}
+        <div className="relative aspect-[9/16] w-full overflow-hidden">
           <Image
             src={project.image}
             alt={project.title}
@@ -71,7 +71,7 @@ export function TemplatesPreview({ lang, t }) {
 
       </div>
 
-      {/* Text */}
+      {/* Info */}
       <div className={`mt-4 ${isRTL ? "text-right" : ""}`}>
         <h3 className="text-lg font-semibold text-gray-900">
           {project.title}
@@ -83,7 +83,6 @@ export function TemplatesPreview({ lang, t }) {
           </p>
         )}
 
-        {/* Button */}
         <span className="inline-block px-4 py-2 text-sm font-medium text-white bg-black rounded-md group-hover:bg-gray-800 transition">
           See Template
         </span>
