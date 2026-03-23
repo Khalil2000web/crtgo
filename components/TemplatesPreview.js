@@ -52,47 +52,46 @@ export function TemplatesPreview({ lang, t }) {
         </div>
 
         {/* Grid */}
-        <div className="grid md:grid-cols-3 gap-6">
-          {projects.map((project, index) => (
-<Link key={index} href={project.link}>
-  <div className="group relative overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all cursor-pointer">
+<div className="grid md:grid-cols-3 gap-8">
+  {projects.map((project, index) => (
+    <Link key={index} href={project.link} className="group">
+      
+      {/* Card */}
+      <div className="overflow-hidden rounded-xl shadow-md hover:shadow-xl transition bg-white">
 
-    {/* Image */}
-    <div className="relative h-72 w-full overflow-hidden">
-      <Image
-        src={project.image}
-        alt={project.title}
-        fill
-        className="object-cover transition-transform duration-300 group-hover:scale-105"
-      />
-    </div>
+        {/* Screenshot (16:9 like YouTube/video) */}
+        <div className="relative aspect-video w-full overflow-hidden">
+          <Image
+            src={project.image}
+            alt={project.title}
+            fill
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+        </div>
 
-    {/* Overlay */}
-    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-6">
+      </div>
 
-      <h3 className={`text-white text-lg font-bold ${isRTL ? "text-right" : ""}`}>
-        {project.title}
-      </h3>
+      {/* Text */}
+      <div className={`mt-4 ${isRTL ? "text-right" : ""}`}>
+        <h3 className="text-lg font-semibold text-gray-900">
+          {project.title}
+        </h3>
 
-      {project.category && (
-        <p className="text-white/80 text-sm mb-3">
-          {project.category}
-        </p>
-      )}
+        {project.category && (
+          <p className="text-gray-500 text-sm mb-3">
+            {project.category}
+          </p>
+        )}
 
-      {/* See Template Button */}
-      <div className="mt-2">
-        <span className="inline-block px-4 py-2 text-sm font-medium text-black bg-white rounded-md group-hover:bg-gray-200 transition">
+        {/* Button */}
+        <span className="inline-block px-4 py-2 text-sm font-medium text-white bg-black rounded-md group-hover:bg-gray-800 transition">
           See Template
         </span>
       </div>
 
-    </div>
-
-  </div>
-</Link>
-          ))}
-        </div>
+    </Link>
+  ))}
+</div>
       </div>
     </section>
   );
