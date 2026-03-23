@@ -296,8 +296,8 @@ return (
 
   return (
     <div key={i} className={`
-        flex flex-col gap-3 p-3 w-[90%] md:w-[65%] mx-auto mb-12 overflow-hidden rounded-md transition
-        ${isOpen ? "border border-gray-400" : ""}
+        flex flex-col gap-5 p-3 w-[90%] md:w-[65%] mx-auto overflow-hidden rounded-md transition
+        ${isOpen ? "border mb-12 border-gray-400" : ""}
       `}>
 
       {/* Block */}
