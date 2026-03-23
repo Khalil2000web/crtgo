@@ -334,11 +334,11 @@ return (
 
       {/* Items row */}
       <div
-        className={`transition-all duration-300 overflow-hidden ${
+        className={`transition-all duration-300 gap-6 overflow-hidden ${
           isOpen ? "max-h-[1600px] opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="flex flex-col gap-6 p-4 last:pb-8 mb-12 last:border-b-0 ">
+        <div className="flex flex-col gap-6 p-4 mb-12 last:border-b-0 ">
 
           {section.items.map((item, idx) => (
             <div key={idx} className="flex items-start justify-between">
