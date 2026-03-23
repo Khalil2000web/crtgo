@@ -64,7 +64,7 @@ const [mounted, setMounted] = useState(false);
 const [lang, setLang] = useState("ar"); // default Arabic
 const [isOpen, setIsOpen] = useState(false)
 const [selectedItem, setSelectedItem] = useState(null)
-const [openIndex, setOpenIndex] = useState(null);
+const [openIndex, setOpenIndex] = useState([]);
 const [langMenuOpen, setLangMenuOpen] = useState(false);
 
  const isRTL = lang === 'ar' || lang === 'he';
@@ -292,17 +292,24 @@ return (
 
 
 {sections.map((section, i) => {
-  const isOpen = openIndex === i;
+  const isOpen = openIndex.includes(i);
 
   return (
     <div key={i} className={`
         flex flex-col gap-2 p-3 w-[90%] md:w-[65%] mx-auto overflow-hidden rounded-md transition
-        ${isOpen ? "bg-gray-100/15 border border-gray-400" : ""}
+        ${isOpen ? "border border-gray-400" : ""}
       `}>
 
       {/* Block */}
-      <button
-        onClick={() => setOpenIndex(isOpen ? null : i)}
+<button
+  onClick={() =>
+    setOpenIndex(prev =>
+      prev.includes(i)
+        ? prev.filter(index => index !== i)
+        : [...prev, i]
+    )
+  }
+
         className="relative flex items-center w-full h-[190px] px-4 overflow-hidden cursor-pointer rounded-[4px] transition"
       >
 
