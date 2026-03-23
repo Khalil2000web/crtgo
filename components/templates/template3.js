@@ -147,7 +147,7 @@ return (
 </div>
 
 
-<div className="overflow-hidden w-full h-[320px] relative mb-6">
+<div dir="ltr" className="overflow-hidden w-full h-[320px] relative mb-6">
   <div className="flex w-max animate-header-scroll absolute">
     {[...data.headerImages, ...data.headerImages].map((src, i) => (
       <div key={i} className="flex-none w-[350px] h-[320px] relative">
