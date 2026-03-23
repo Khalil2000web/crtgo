@@ -149,7 +149,7 @@ return (
 
 <div className="overflow-hidden w-full h-[320px] relative mb-6">
   <div className="flex w-max animate-header-scroll absolute">
-    {[...data.headerImages].map((src, i) => (
+    {[...data.headerImages, ...data.headerImages].map((src, i) => (
       <div key={i} className="flex-none w-[350px] h-[320px] relative">
         <Image src={src} alt="" fill className="pointer-events-none block object-cover" />
       </div>
@@ -157,15 +157,13 @@ return (
   </div>
 
   {/* Optional center logo */}
-<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
-  {/* Circular Logo */}
-  <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-white relative">
-    <Image src={data.logo} alt="Logo" fill className="object-cover" />
-  </div>
+  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+    <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-white relative">
+      <Image src={data.logo} alt="Logo" fill className="object-cover" />
+    </div>
 
-  {/* Name below the logo */}
-  <h1 className="text-xl text-[#f2aa4c] font-bold mt-4">{data.name[lang]}</h1>
-</div>
+    <h1 className="text-xl text-[#f2aa4c] font-bold mt-4">{data.name[lang]}</h1>
+  </div>
 </div>
 
 
