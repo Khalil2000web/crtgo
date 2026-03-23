@@ -10,7 +10,7 @@ import {Portfolio} from '@/components/Portfolio';
 import {Prices} from '@/components/Prices';
 import {Contact} from '@/components/Contact';
 import {Footer} from '@/components/Footer';
-import {TemplatesPreview} from "@/components/TemplatesPreview";
+import {TemplatesPreview} from '@/components/TemplatesPreview';
 import { Noto_Sans_Arabic, Zain } from "next/font/google";
 
 const notoArabic = Noto_Sans_Arabic({
@@ -38,7 +38,7 @@ export default function Page() {
       <Services lang={lang} t={t} />
       <About lang={lang} t={t} />
       <Portfolio lang={lang} t={t} />
-      <TemplatesPreview />
+      <TemplatesPreview lang={lang} t={t} />
       <Prices lang={lang} t={t} />
       <Contact lang={lang} t={t} />
       <Footer lang={lang} t={t} />
