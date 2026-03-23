@@ -296,7 +296,7 @@ return (
 
   return (
     <div key={i} className={`
-        flex flex-col gap-2 p-3 w-[90%] md:w-[65%] mx-auto overflow-hidden rounded-md transition
+        flex flex-col gap-6 p-3 w-[90%] md:w-[65%] mx-auto mb-12 overflow-hidden rounded-md transition
         ${isOpen ? "border border-gray-400" : ""}
       `}>
 
@@ -338,7 +338,7 @@ return (
           isOpen ? "max-h-[1600px] opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="flex flex-col gap-6 p-4 mb-12 last:border-b-0 ">
+        <div className="flex flex-col gap-6 p-4 last:border-b-0 ">
 
           {section.items.map((item, idx) => (
             <div key={idx} className="flex items-start justify-between">
