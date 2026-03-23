@@ -34,12 +34,15 @@ body {
 /* global.css or module.css */
 @keyframes header-scroll {
   0% { transform: translateX(0); }
-  100% { transform: translateX(-33.333%); } /* Move by one set of images */
+  100% { transform: translateX(-50%); }
 }
 
 .animate-header-scroll {
-  animation: header-scroll 5s linear infinite;
+  animation: header-scroll 20s linear infinite;
 }
 
+.animate-header-scroll:hover {
+  animation-play-state: paused;
+}
 
 
