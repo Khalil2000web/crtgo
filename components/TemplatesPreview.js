@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 
-export function Portfolio({ lang, t }) {
+export function TemplatesPreview({ lang, t }) {
   const isRTL = lang === "ar" || lang === "he";
 
   const projects = [
