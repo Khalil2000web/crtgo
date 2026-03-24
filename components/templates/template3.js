@@ -117,10 +117,10 @@ return (
           setLang('ar');
           setLangMenuOpen(false);
         }}
-        className={`px-3 py-1 font-bold border-2 rounded w-full ${
+        className={`px-3 py-1 border-gray-400 font-bold text-black border-2 cursor-pointer rounded w-full ${
           lang === 'ar'
-            ? 'text-black cursor-pointer'
-            : 'bg-[#f2aa4c] border-white text-black hover:bg-white hover:border-[#f2aa4c]'
+            ? 'bg-[#f2aa4c]'
+            : 'border-black'
         }`}
       >
         عربي
@@ -131,10 +131,10 @@ return (
           setLang('he');
           setLangMenuOpen(false);
         }}
-        className={`px-3 py-1 font-bold border-2 rounded w-full ${
+        className={`px-3 py-1 border-gray-400 font-bold text-black border-2 cursor-pointer rounded w-full ${
           lang === 'he'
-           ? 'text-black cursor-pointer'
-            : 'bg-[#f2aa4c] border-white text-black hover:bg-white hover:border-[#f2aa4c]'
+           ? 'bg-[#f2aa4c]'
+            : 'border-black'
         }`}
       >
         עברית
@@ -142,7 +142,6 @@ return (
     </div>
   )}
 </div>
-
 
 </div>
 
@@ -241,8 +240,6 @@ return (
     </DialogPanel>
   </div>
 </Dialog>
-
-
 
 <div className="flex flex-col fixed right-[20px] bottom-[20px] z-100 flex-wrap items-center justify-center gap-1">
 
@@ -379,26 +376,17 @@ return (
 })}
 
 
-
-
-
-
-
 {/* Footer */}
 <footer className="mt-12 mb-20 border border-gray-600/40 rounded w-[95%] md:w-[70%] lg:w-[60%] mx-auto border-t border-[#1111111c] text-center flex flex-col gap-4 items-center justify-center py-8 mb-3">
-
-
-  <Link className="underline underline-offset-4 hover:bg-white hover:border-[#f2aa4c] border-2 border-transparent hover:text-black p-3 rounded transition" href="/terms">{translations[lang].terms}</Link>
+<Link className="underline underline-offset-4 hover:bg-white hover:border-[#f2aa4c] border-2 border-transparent hover:text-black p-2 rounded transition" href="/terms">{translations[lang].terms}</Link>
         
-        <p className="text-white" dir="ltr">&copy; {new Date().getFullYear()} CRTGO & {data.name[lang]}</p>
-        <p className="text-white">{translations[lang].allrights}</p>
-        <p className="text-white" dir="ltr">CREATED BY <a className="text-[#f2aa4c] hover:underline underline-offset-4" href="/">CRTGO, WEB SERVICES ❤️</a></p>
-      </footer>
+<p className="text-white" dir="ltr">&copy; {new Date().getFullYear()} CRTGO & {data.name[lang]}</p>
+<p className="text-white">{translations[lang].allrights}</p>
+<p className="text-white" dir="ltr">CREATED BY <Link className="text-[#f2aa4c] hover:underline underline-offset-4" href="/">CRTGO, WEB SERVICES ❤️</Link></p>
+</footer>
+</div>
 
-    </div>
-    <Script
-        src="https://cdn.jsdelivr.net/npm/sienna-accessibility@latest/dist/sienna-accessibility.umd.js"
-        strategy="afterInteractive" />
-        </>
+<Script src="https://cdn.jsdelivr.net/npm/sienna-accessibility@latest/dist/sienna-accessibility.umd.js" strategy="afterInteractive" />
+  </>
   )
 }

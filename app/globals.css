@@ -31,18 +31,14 @@ body {
 
 
 
-/* global.css or module.css */
-@keyframes header-scroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+.fade-image {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1s ease;
 }
 
-.animate-header-scroll {
-  animation: header-scroll 20s linear infinite;
+.fade-image.active {
+  opacity: 1;
 }
-
-.animate-.animate-header-scroll {
-  animation-play-state: paused;
-}
-
 
