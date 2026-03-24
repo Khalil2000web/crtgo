@@ -100,7 +100,6 @@ if (!mounted) return null;
 
 return (
 <>
-<div
   <div
   className={`${lang === 'ar' ? elMessiri.className : openSans.className} text-black mx-auto scroll-smooth`}
   dir={isRTL ? 'rtl' : 'ltr'}
