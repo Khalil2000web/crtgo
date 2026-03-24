@@ -287,13 +287,11 @@ return (
         {/* 🔸 Scrollable content */}
         <div className="flex-1 overflow-y-auto p-4 pb-18 flex flex-col gap-8">
 
-
-
 {activeSection.items.map((item, idx) => (
   <div key={idx} className="flex justify-center pb-4 last:pb-0">
     <div className="flex justify-between items-start gap-4 w-[90%] border-b border-gray-300 last:border-b-0">
       {/* Image */}
-      <div className="relative w-[110px] h-[110px] flex-shrink-0">
+      <div className="relative w-[150px] h-[150px] flex-shrink-0">
         <Image
           src={item.img}
           alt={item.name[lang]}
