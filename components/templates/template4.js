@@ -365,7 +365,7 @@ return (
 
 
 
-<footer className="ext-black mt-12 mb-20 rounded-[20px] bg-gray-300 w-[100%] md:w-[60%] mx-auto text-center flex flex-col gap-4 items-center justify-center py-8 mb-3">
+<footer className={`${lang === 'ar' ? elMessiri.className : openSans.className} text-black mt-12 mb-20 rounded-[20px] bg-gray-300 w-[100%] md:w-[60%] mx-auto text-center flex flex-col gap-4 items-center justify-center py-8`}>
 <Link className="underline-offset-4 hover:underline p-2 rounded transition" href="/terms">{translations[lang].terms}</Link>
         
 <p className="text-sm" dir="ltr">&copy; {new Date().getFullYear()} CRTGO & {data.name[lang]}</p>
