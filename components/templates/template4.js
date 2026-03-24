@@ -285,7 +285,7 @@ return (
         </div>
 
         {/* 🔸 Scrollable content */}
-        <div className="flex-1 overflow-y-auto p-3 pb-18 flex flex-col gap-8">
+        <div className="flex-1 overscroll-none overflow-y-auto p-3 pb-18 flex flex-col gap-8">
 
 {activeSection.items.map((item, idx) => (
   <div key={idx} className="flex justify-center pb-4 last:pb-0">
