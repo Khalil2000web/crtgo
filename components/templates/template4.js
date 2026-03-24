@@ -239,7 +239,7 @@ return (
 
 
 
-<div className={`${lang === 'ar' ? elMessiri.className : openSans.className}`} grid grid-cols-2 md:grid-cols-3 gap-6 w-[100%] md:w-[60%] mx-auto bg-gray-300 border border-gray-500/10 rounded-[20px] py-22`}>
+<div className={`${lang === 'ar' ? elMessiri.className : openSans.className} grid grid-cols-2 md:grid-cols-3 gap-6 w-[100%] md:w-[60%] mx-auto bg-gray-300 border border-gray-500/10 rounded-[20px] py-22`}>
   {sections.map((section, i) => (
     <button
       key={i}
@@ -337,7 +337,11 @@ return (
   </div>
 </Dialog>
 
-<Dialog open={isOpen} onClose={() => setIsOpen(false)} className={`${lang === 'ar' ? elMessiri.className : openSans.className}`} relative z-50000`}>
+<Dialog
+  open={isOpen}
+  onClose={() => setIsOpen(false)}
+  className={`${lang === 'ar' ? elMessiri.className : openSans.className} relative z-50000`}
+>
   <div className="fixed inset-0 bg-black/60" />
 
   <div className="fixed inset-0 flex items-center justify-center p-4">
