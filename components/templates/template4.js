@@ -9,13 +9,20 @@ import { FaInstagram, FaFacebook, FaTiktok, FaPhoneAlt } from "react-icons/fa";
 import { RiTimeLine } from "react-icons/ri";
 import { Globe } from 'lucide-react';
 import { X } from "lucide-react";
-import { Noto_Sans_Arabic } from "next/font/google";
+import Head from "next/head";
+import { El_Messiri, Open_Sans } from 'next/font/google';
 
-const notoArabic = Noto_Sans_Arabic({
-  weight: ["100","200","300","400","500","600","700","800","900"],
-  subsets: ["arabic"],
-  display: "swap",
+const elMessiri = El_Messiri({
+  subsets: ['arabic'],
+  weight: ['400','500','700'],
+  display: 'swap',
 });
+
+const openSans = Open_Sans({
+  subsets: ['hebrew', 'latin'],
+  weight: ['300','400','600','700','800'],
+  display: 'swap',
+})
 
 const translations = {
   ar: {
@@ -94,8 +101,9 @@ if (!mounted) return null;
 return (
 <>
 <div
-  className={`${notoArabic.className} text-[#000] mx-auto scroll-smooth`}
-  dir="rtl"
+  <div
+  className={`${lang === 'ar' ? elMessiri.className : openSans.className} text-black mx-auto scroll-smooth`}
+  dir={isRTL ? 'rtl' : 'ltr'}
 >
 
 
