@@ -117,9 +117,9 @@ return (
     >
       <Image
         src={src}
-        alt=""
+        alt="Image"
         fill
-        className="object-cover"
+        className="object-cover block pointer-events-none"
       />
     </div>
   ))}
@@ -239,7 +239,7 @@ return (
 
 
 
-<div className={`${lang === 'ar' ? elMessiri.className : openSans.className} grid grid-cols-2 md:grid-cols-3 gap-6 w-[100%] md:w-[60%] mx-auto bg-gray-300 border border-gray-500/10 rounded-[20px] py-22`}>
+<div className={`${lang === 'ar' ? elMessiri.className : openSans.className} grid grid-cols-2 md:grid-cols-3 gap-6 w-[100%] md:w-[60%] mx-auto bg-gray-300 border border-gray-500/10 rounded-[20px] py-[85px]`}>
   {sections.map((section, i) => (
     <button
       key={i}
@@ -270,7 +270,7 @@ return (
 <Dialog
   open={!!activeSection}
   onClose={() => setActiveSection(null)}
-  className={`${lang === 'ar' ? elMessiri.className : openSans.className}`} relative z-50000`}
+  className={`${lang === 'ar' ? elMessiri.className : openSans.className} relative z-[500]`}
 >
   {/* Overlay */}
   <div className="fixed inset-0 bg-gray-200" />
@@ -323,7 +323,7 @@ return (
         </div>
 
         {/* 🔸 Bottom fixed bar */}
-        <div className="sticky bottom-0 w-full bg-gra-200 border-t border-gray-700 p-4 flex justify-center">
+        <div className="sticky bottom-0 w-full bg-gray-200 border-t border-gray-700 p-4 flex justify-center">
           <button
             onClick={() => setActiveSection(null)}
             className="bg-black text-white px-6 py-2 rounded font-bold hover:bg-white cursor-pointer border border-white hover:border-black hover:text-black transition"
