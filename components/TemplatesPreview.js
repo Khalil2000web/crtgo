@@ -63,7 +63,7 @@ export function TemplatesPreview({ lang, t }) {
         <div className="relative aspect-[9/16] w-full overflow-hidden">
           <Image
             src={project.image}
-            alt={project.title}
+            alt="image"
             fill
             className="object-cover transition-transform duration-300 group-hover:scale-105"
           />

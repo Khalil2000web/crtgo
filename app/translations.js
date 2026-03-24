@@ -199,5 +199,9 @@ export const translations = {
     footerText: 'מתמחה בפיתוח פתרונות דיגיטליים למסעדות ובתי קפה',
     company: 'החברה',
     allRights: 'כל הזכויות שמורות',
+
+    // 404
+    goHome: 'العودة للصفحة الرئيسية',
+    pageNotFound: 'الصفحة غير موجودة',
   }
 };
