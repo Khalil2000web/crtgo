@@ -126,12 +126,12 @@ return (
 </div>
 
 {/* Card */}
-<div className="absolute z-10 h-[230px] top-[160px] left-1/2 -translate-x-1/2 flex flex-col pt-7 w-[85vw] md:w-[55%] bg-gray-100 border border-gray-300 rounded-[20px] items-center shadow-lg">
+<div className={`${lang === 'ar' ? elMessiri.className : openSans.className} absolute z-10 h-[230px] top-[160px] left-1/2 -translate-x-1/2 flex flex-col pt-7 w-[85vw] md:w-[55%] bg-gray-100 border border-gray-300 rounded-[20px] items-center shadow-lg`}>
   <h1 className="text-xl text-[#000] font-bold pt-7">{data.name[lang]}</h1>
   <p className="text-sm text-gray-600 mt-1">{data.mainDesc[lang]}</p>
   <p className="text-sm text-gray-600 mt-1">{data.location[lang]}</p>
 
-  <div className="flex items-center justify-between flex-row w-full px-[10px] mt-8">
+  <div className="flex items-center justify-between flex-row w-full px-[22px] mt-8">
 
 <div className="flex items-center justify-center gap-2">
 <button
@@ -146,7 +146,9 @@ return (
     className="cursor-pointer flex items-center gap-2 text-gray-400 hover:text-[#f2aa4c] transition-colors"
   >
     <Globe size={20} />
-    <span className="text-sm text-gray-600">{lang === 'ar' ? 'ع' : 'עב'}</span>
+    <span className={`text-sm text-gray-600 ${lang === 'ar' ? elMessiri.className : openSans.className}`}>
+  {lang === 'ar' ? 'ع' : 'עב'}
+</span>
   </button>
 
   {langMenuOpen && (
@@ -237,7 +239,7 @@ return (
 
 
 
-<div className="grid grid-cols-2 md:grid-cols-3 gap-6 w-[100%] md:w-[60%] mx-auto bg-gray-300 border border-gray-500/10 rounded-[20px] py-22 ">
+<div className={`${lang === 'ar' ? elMessiri.className : openSans.className}`} grid grid-cols-2 md:grid-cols-3 gap-6 w-[100%] md:w-[60%] mx-auto bg-gray-300 border border-gray-500/10 rounded-[20px] py-22`}>
   {sections.map((section, i) => (
     <button
       key={i}
@@ -245,12 +247,12 @@ return (
       className="flex flex-col items-center cursor-pointer gap-3"
     >
       {/* Circle Image */}
-      <div className="relative w-[120px] h-[120px] md:w-[140px] md:h-[140px]">
+      <div className="relative w-[150px] h-[150px] md:w-[165px] md:h-[165px]">
         <Image
           src={section.image}
           alt={section.title[lang]}
           fill
-          className="object-cover rounded-full shadow-md"
+          className="object-cover rounded-full shadow-md pointer-events-none"
         />
       </div>
 
@@ -265,15 +267,10 @@ return (
 
 
 
-
-
-
-
-
 <Dialog
   open={!!activeSection}
   onClose={() => setActiveSection(null)}
-  className="relative z-50000"
+  className={`${lang === 'ar' ? elMessiri.className : openSans.className}`} relative z-50000`}
 >
   {/* Overlay */}
   <div className="fixed inset-0 bg-gray-200" />
@@ -340,7 +337,7 @@ return (
   </div>
 </Dialog>
 
-<Dialog open={isOpen} onClose={() => setIsOpen(false)} className="relative z-50000">
+<Dialog open={isOpen} onClose={() => setIsOpen(false)} className={`${lang === 'ar' ? elMessiri.className : openSans.className}`} relative z-50000`}>
   <div className="fixed inset-0 bg-black/60" />
 
   <div className="fixed inset-0 flex items-center justify-center p-4">
