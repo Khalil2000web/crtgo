@@ -4,6 +4,7 @@ import Template1 from "@/components/templates/template1"
 import Template2 from "@/components/templates/template2"
 import Template3 from "@/components/templates/template3"
 import Template4 from "@/components/templates/template4"
+import Template5 from "@/components/templates/template5"
 
 export default async function Page({ params }) {
 
@@ -28,6 +29,7 @@ export default async function Page({ params }) {
     template2: Template2,
     template3: Template3,
     template4: Template4,
+    template5: Template5,
   }
 
   const Template = templates[site.template] || Template1
