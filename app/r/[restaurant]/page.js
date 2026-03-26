@@ -5,6 +5,7 @@ import Template2 from "@/components/templates/template2"
 import Template3 from "@/components/templates/template3"
 import Template4 from "@/components/templates/template4"
 import Template5 from "@/components/templates/template5"
+import Template6 from "@/components/templates/template6"
 
 export default async function Page({ params }) {
 
@@ -19,7 +20,7 @@ export default async function Page({ params }) {
   console.log(data, error)
 
   if (error || !data) {
-    return <div className="p-10 text-2xl">Restaurant not found</div>
+    return <div className="p-10 text-2xl"> not found</div>
   }
 
   const site = data.site_data
@@ -30,6 +31,7 @@ export default async function Page({ params }) {
     template3: Template3,
     template4: Template4,
     template5: Template5,
+    template6: Template6,
   }
 
   const Template = templates[site.template] || Template1
