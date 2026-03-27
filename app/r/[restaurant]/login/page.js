@@ -29,24 +29,24 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="w-screen h-screen bg-black text-white p-10 mx-auto">
-    <div className="flex flex-col items-center justify-center w-full h-full md:max-w-md mx-auto">  
-      <h1 className="text-xl mb-4">Login for {restaurant}</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+    <div className="flex items-center justify-center w-screen h-screen bg-black text-white p-10 mx-auto">
+    <div className="flex flex-col items-center justify-center w-[90vw] h-full md:max-w-md mx-auto">  
+      <h1 className="text-xl mb-4 w-full">Login for {restaurant}</h1>
+      <form onSubmit={handleSubmit} className="w-full flex flex-col gap-3 items-center justify-center mx-auto">
         <input
           value={username}
-          onChange={e => setUsername(e.target.value)}
+          onChange={e => setUsername(e.target.value.toLowerCase())}
           placeholder="Username"
-          className="border p-2"
+          className="border rounded p-2 w-full"
         />
         <input
           value={password}
           onChange={e => setPassword(e.target.value)}
           type="password"
           placeholder="Password"
-          className="border p-2"
+          className="border rounded p-2 w-full"
         />
-        <button type="submit" className="cursor-pointer bg-white text-black p-2 hover:bg-black hover:text-white transition border border-transparent hover:border-white font-bold">Login</button>
+        <button type="submit" className="w-full rounded cursor-pointer bg-white text-black p-2 hover:bg-black hover:text-white transition border border-transparent hover:border-white font-bold">Login</button>
         {error && <p className="text-red-500 bold uppercase pt-3 text-left">{error}</p>}
       </form>
     </div>

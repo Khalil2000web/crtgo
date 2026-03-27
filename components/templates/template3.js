@@ -337,8 +337,16 @@ return (
       >
         <div className="flex flex-col gap-6 p-4 last:border-b-0 ">
 
-          {section.items.map((item, idx) => (
-            <div key={idx} className="flex items-start justify-between">
+{section.items.map((item, idx) => (
+            <div key={idx} className="relative flex items-start justify-between">
+
+
+    {/* Overlay */}
+    {!item.available && (
+      <div className="absolute inset-0 bg-black/60 flex rounded-md items-center justify-center text-white text-lg font-bold z-[300]">
+        Not Available
+      </div>
+    )}
 
               {/* Text */}
               <div className="flex flex-col gap-1">
@@ -370,7 +378,6 @@ return (
 
         </div>
       </div>
-
     </div>
   );
 })}

@@ -4,6 +4,8 @@ import { useRouter, useParams } from "next/navigation"
 import Template1Edit from "@/components/templates/template1Edit"
 import Template2Edit from "@/components/templates/template2Edit"
 import Template3Edit from "@/components/templates/template3Edit"
+import Template4Edit from "@/components/templates/template4Edit"
+
 
 
 export default function EditPage() {
@@ -32,8 +34,19 @@ export default function EditPage() {
       .catch(() => router.push(`/r/${restaurant}/login`))
   }, [restaurant, router])
 
-  if (loading) return <p>Loading...</p>
-  if (!siteData) return <p>Error loading data</p>
+if (loading)
+  return (
+    <div className="w-screen h-screen flex items-center justify-center">
+      <p className="text-xl font-semibold">Loading...</p>
+    </div>
+  );
+
+if (!siteData)
+  return (
+    <div className="w-screen h-screen flex items-center justify-center">
+      <p className="text-xl font-semibold">Error loading data</p>
+    </div>
+  );
 
   // Dynamically render based on template type
   switch (siteData.template) {
@@ -43,6 +56,8 @@ export default function EditPage() {
         return <Template2Edit data={siteData} token={token} />
       case "template3":
         return <Template3Edit data={siteData} token={token} />
+      case "template4":
+        return <Template4Edit data={siteData} token={token} />
     default:
       return <p>Unknown template</p>
   }
