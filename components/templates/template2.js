@@ -7,6 +7,7 @@ import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react"
 import Script from "next/script";
 import { FaInstagram, FaFacebook, FaTiktok, FaPhoneAlt } from "react-icons/fa";
 import { RiTimeLine } from "react-icons/ri";
+import { X } from "lucide-react";
 
 import { Noto_Sans_Arabic } from "next/font/google";
 
@@ -94,14 +95,14 @@ return (
   ></div>
 
   {/* Content on top */}
-  <div className="relative z-10 flex flex-col items-center justify-center text-center w-full h-full">
+<div className="relative z-10 flex flex-col items-center justify-center text-center w-full h-full">
 <div className="w-[190px] h-[190px] rounded-full overflow-hidden border border-white">
   <Image
     src={data.logo}
     alt="logo"
     width={190}
     height={190}
-    className="object-cover pointer-events-none"
+    className="object-cover block pointer-events-none"
   />
 </div>
     <h2 className="text-lg text-white font-bold p-3">{data.name[lang]}</h2>
@@ -203,9 +204,9 @@ return (
 <div className="mt-auto flex justify-center">
   <button
     onClick={() => setIsOpen(false)}
-    className="px-3 py-1 bg-gray-200 rounded cursor-pointer hover:bg-gray-300 transition font-bold border border-gray-400"
+    className="px-3 py-1 bg-gray-200 rounded cursor-pointer hover:bg-gray-300 transition font-bold border border-gray-400 flex flex-row items-center justify-center gap-2"
   >
-    {translations[lang].workingHoursModalClose}
+    <X /> {translations[lang].workingHoursModalClose}
   </button>
 </div>
     </DialogPanel>
@@ -251,9 +252,9 @@ return (
             <div className="flex justify-between items-center mt-4 font-bold">
               <button
                 onClick={() => setSelectedItem(null)}
-                className="cursor-pointer px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
+                className="cursor-pointer px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 flex flex-row items-center justify-center gap-2 transition border border-gray-900"
               >
-                {translations[lang].workingHoursModalClose}
+                <X /> {translations[lang].workingHoursModalClose}
               </button>
               <span>₪{selectedItem.price}</span>
             </div>
@@ -297,9 +298,19 @@ return (
           {section.title[lang]}
         </h2>
 
+
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 px-5">
           {section.items.map((item, idx) => (
-            <button key={idx} onClick={() => setSelectedItem(item)} className="w-full text-left cursor-pointer" >
+    
+            <button key={idx} onClick={() => setSelectedItem(item)} disabled={!item.available}
+  className={`relative w-full text-left transition 
+    ${item.available ? "cursor-pointer hover:scale-105" : "cursor-not-allowed"}
+  `} >
+                {!item.available && (
+    <div className="absolute inset-0 bg-black/60 flex items-center justify-center text-white text-lg font-bold z-20 pointer-events-none">
+      Not Available
+    </div>
+  )}
               <div className="relative w-full aspect-square overflow-hidden rounded-lg">
 
                 <Image
@@ -326,6 +337,7 @@ return (
 
               </div>
             </button>
+
           ))}
         </div>
       </div>

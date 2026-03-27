@@ -1,12 +1,11 @@
 "use client";
 
-import { useState, useRef, Fragment, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Disclosure } from "@headlessui/react";
 import Script from "next/script";
 import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/solid";
-import { PhoneIcon } from "@heroicons/react/24/outline";
 import { FaInstagram, FaFacebook, FaTiktok, FaPhoneAlt } from "react-icons/fa";
 
 import { Noto_Sans_Arabic } from "next/font/google";
