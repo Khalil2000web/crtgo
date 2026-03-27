@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabase"
+import { notFound } from "next/navigation"
 
 import Template1 from "@/components/templates/template1"
 import Template2 from "@/components/templates/template2"
@@ -7,20 +8,19 @@ import Template4 from "@/components/templates/template4"
 import Template5 from "@/components/templates/template5"
 import Template6 from "@/components/templates/template6"
 
-export default async function Page({ params }) {
+export const revalidate = 0;
 
+export default async function Page({ params }) {
   const { restaurant } = await params
 
   const { data, error } = await supabase
     .from("restaurants")
-    .select("*")
+    .select("site_data")
     .eq("slug", restaurant)
     .single()
 
-  console.log(data, error)
-
   if (error || !data) {
-    return <div className="p-10 text-2xl"> not found</div>
+    notFound()
   }
 
   const site = data.site_data
