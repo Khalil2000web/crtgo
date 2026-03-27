@@ -307,7 +307,7 @@ return (
     )
   }
 
-        className="relative flex items-center w-full h-[190px] px-4 overflow-hidden cursor-pointer rounded-[4px] transition"
+        className="relative flex items-center w-full h-[190px] px-4 overflow-hidden cursor-pointer rounded-[4px] transition border border-gray-300/30"
       >
 
         <div className="absolute left-0 top-0 h-full w-[45%]">

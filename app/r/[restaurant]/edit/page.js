@@ -3,6 +3,8 @@ import { useEffect, useState } from "react"
 import { useRouter, useParams } from "next/navigation"
 import Template1Edit from "@/components/templates/template1Edit"
 import Template2Edit from "@/components/templates/template2Edit"
+import Template3Edit from "@/components/templates/template3Edit"
+
 
 export default function EditPage() {
   const router = useRouter()
@@ -37,8 +39,10 @@ export default function EditPage() {
   switch (siteData.template) {
     case "template1":
       return <Template1Edit data={siteData} token={token} />
-    case "template2":
-      return <Template2Edit data={siteData} token={token} />
+      case "template2":
+        return <Template2Edit data={siteData} token={token} />
+      case "template3":
+        return <Template3Edit data={siteData} token={token} />
     default:
       return <p>Unknown template</p>
   }
