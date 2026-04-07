@@ -255,9 +255,8 @@ const handleSave = async () => {
       </div>
 
 
-        {/* Center Logo */}
 
-          <div className="hidden absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+      <div className="absolute top-[20px] left-1/2 -translate-x-1/2  flex flex-col items-center">
           <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-white relative">
             {siteData.logo && (
                       <Image
@@ -279,15 +278,12 @@ const handleSave = async () => {
                       onChange={e => handleUpload(e, "logo")}
                     />
                   </label>
-          </div>
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-full flex items-center justify-center">
-          <input
+              <input
             value={siteData.name[lang]}
             onChange={e => handleChange("name", {...siteData.name,[lang]:e.target.value})}
             className="text-xl text-center font-bold mt-4 rounded px-2 py-1 bg-black/20 text-white border-2 border-white"
           />
           </div>
-
 
       {/* ✅ NEW BLOCK UNDER HEADER */}
   {/* ===== HEADER IMAGES EDITOR (LIVE) ===== */}
@@ -329,8 +325,9 @@ const handleSave = async () => {
       </label>
     )}
 
-  </div>
 </div>
+</div>
+
 
     {/* Socials */}
     <div className="my-2 flex flex-wrap items-center justify-center gap-3 mt-3">
