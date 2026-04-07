@@ -1,12 +1,19 @@
 import { supabase } from "@/lib/supabase"
 import { revalidatePath } from "next/cache"
+import jwt from "jsonwebtoken"
 
 export async function POST(req) {
-  const { token, site_data } = await req.json()
+  const token = req.headers.get("authorization");
+  const { site_data } = await req.json();
 
-  if (!token) return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 })
+  if (!token) return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
 
-  const decoded = JSON.parse(Buffer.from(token, "base64").toString("utf-8"))
+  let decoded;
+  try {
+    decoded = jwt.verify(token, process.env.JWT_SECRET);
+  } catch {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
+  }
   const restaurantId = decoded.restaurantId
 
   // Update restaurant

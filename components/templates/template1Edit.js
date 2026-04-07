@@ -71,18 +71,32 @@ export default function Template1Edit({ data, token }) {
   };
 
   // ===== UPLOAD =====
-const handleUpload = async (e, key, sectionIdx = null, itemIdx = null) => {
+const handleUpload = async (e, key, templateKey = null) => {
   const file = e.target.files[0];
   if (!file) return;
 
   const formData = new FormData();
   formData.append("file", file);
 
-  const res = await fetch("/api/admin/upload", { method: "POST", body: formData });
+  const res = await fetch("/api/admin/upload", {
+    method: "POST",
+    headers: { Authorization: token },
+    body: formData
+  });
+
   const d = await res.json();
 
-  if (sectionIdx !== null && itemIdx !== null) {
-    handleItemChange(sectionIdx, itemIdx, key, d.url);
+  if (templateKey) {
+    setSiteData(prev => ({
+      ...prev,
+      templateConfig: {
+        ...prev.templateConfig,
+        [templateKey]: {
+          ...(prev.templateConfig?.[templateKey] || {}),
+          [key]: d.url
+        }
+      }
+    }));
   } else {
     handleChange(key, d.url);
   }
@@ -114,15 +128,25 @@ const handleUpload = async (e, key, sectionIdx = null, itemIdx = null) => {
 };
 
   // ===== SAVE =====
-  const handleSave = async () => {
-    const res = await fetch("/api/admin/save", {
-      method: "POST",
-      body: JSON.stringify({ token, site_data: siteData }),
-      headers: { "Content-Type": "application/json" },
-    });
-    if (res.ok) alert("Saved!");
-    else alert("Error saving!");
-  };
+const handleSave = async () => {
+  const res = await fetch("/api/admin/save", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token
+    },
+    body: JSON.stringify({ site_data: siteData })
+  });
+
+  if (res.ok) {
+    alert("Saved!");
+
+    // reload AFTER saving (so new template is loaded)
+    window.location.reload();
+  } else {
+    alert("Error saving!");
+  }
+};
 
   const scrollToSection = (id) => {
     const el = document.getElementById(id);
@@ -130,34 +154,47 @@ const handleUpload = async (e, key, sectionIdx = null, itemIdx = null) => {
   };
 
   return (
-    <div className={`${notoArabic.className} font-sans bg-[#fefefe] text-[#877259] scroll-smooth`} dir={lang==="ar"?"rtl":"ltr"}>
+    <div className={`${notoArabic.className} font-sans bg-[#fefefe] text-[#877259] scroll-smooth`} dir={lang==="ar"?"rtl":"rtl"}>
       
       {/* Header */}
-      <header className="relative w-full h-[350px] flex items-end justify-center text-center overflow-hidden">
-        {siteData.biglogo && (
-          <Image src={siteData.biglogo} alt="header" fill className="object-cover z-1" />
-        )}
-        <div className="absolute bottom-5 w-full px-4">
-          <input
-            value={siteData.name[lang]}
-            onChange={e => handleChange("name", { ...siteData.name, [lang]: e.target.value })}
-            className="text-center text-[clamp(2rem,5vw,4rem)] font-bold text-black bg-white/80 px-2 py-1 rounded"
-          />
-        </div>
-        <input type="file" className="absolute inset-0 opacity-0 cursor-pointer" onChange={e => handleUpload(e,"biglogo")} />
-      </header>
+<header className="relative w-full h-[350px] flex items-end justify-center text-center overflow-hidden">
+  {siteData.templateConfig?.template1?.biglogo && (
+    <Image
+      src={siteData.templateConfig.template1.biglogo}
+      alt="header"
+      fill
+      className="object-cover z-1"
+    />
+  )}
+
+  <div className="absolute bottom-5 w-full px-4 z-30">
+    <input
+      value={siteData.name[lang]}
+      onChange={e =>
+        handleChange("name", { ...siteData.name, [lang]: e.target.value })
+      }
+      className="text-center text-[clamp(2rem,5vw,4rem)] font-bold text-black bg-white/80 px-2 py-1 rounded"
+    />
+  </div>
+
+  <input
+    type="file"
+    className="absolute inset-0 opacity-0 cursor-pointer"
+    onChange={e => handleUpload(e, "biglogo")}
+  />
+</header>
 
       {/* Language Switch */}
       <div className="flex justify-center gap-2 mt-4">
-        <button onClick={() => setLang("ar")} className={`px-3 py-1 rounded border ${lang==="ar"?"bg-black text-white":""}`}>عربي</button>
-        <button onClick={() => setLang("he")} className={`px-3 py-1 rounded border ${lang==="he"?"bg-black text-white":""}`}>עברית</button>
+        <button onClick={() => setLang("ar")} className={`px-3 py-1 rounded border cursor-pointer ${lang==="ar"?"bg-black text-white":""}`}>عربي</button>
+        <button onClick={() => setLang("he")} className={`px-3 py-1 rounded border cursor-pointer ${lang==="he"?"bg-black text-white":""}`}>עברית</button>
       </div>
 
       {/* Socials */}
       <div className="flex flex-wrap items-center justify-center gap-3 mt-5">
         {["instagram","facebook","tiktok","phone"].map(key => siteData[key] && (
           <div key={key}>
-            <input type="text" value={siteData[key]} onChange={e=>handleChange(key,e.target.value)} placeholder={key} className="border px-2 py-1 rounded w-32"/>
+            <input type="text" value={siteData[key]} onChange={e=>handleChange(key,e.target.value)} placeholder={key} className="border text-left px-2 py-1 rounded w-32" dir="ltr"/>
           </div>
         ))}
       </div>
@@ -169,14 +206,16 @@ const handleUpload = async (e, key, sectionIdx = null, itemIdx = null) => {
             {sec.title[lang]}
           </button>
         ))}
-        <button onClick={addSection} className="cursor-pointer border border-green-600 text-green-600 rounded font-bold px-4 py-2 hover:bg-green-600 hover:text-white transition">+ Add Section</button>
+        <button onClick={addSection} className="cursor-pointer border border-green-600 text-green-600 rounded font-bold px-4 py-2 hover:bg-green-600 hover:text-white transition">+ اضافة قسم</button>
       </div>
 
       {/* Sections */}
       {siteData.sections.map((section,i) => (
-        <div key={section.id} id={section.id} className="scroll-mt-32 w-full py-8 border-b border-gray-200">
-          <input value={section.title[lang]} onChange={e => handleSectionChange(i,"title",{ ...section.title,[lang]:e.target.value })} className="text-xl font-bold mb-4 text-center border px-2 py-1 rounded w-full max-w-md mx-auto"/>
-          
+        <div key={section.id} id={section.id} className="scroll-mt-32 py-8 border-b border-gray-200">
+          <div className="flex items-center justify-center gap-4 mb-6">
+          <input value={section.title[lang]} onChange={e => handleSectionChange(i,"title",{ ...section.title,[lang]:e.target.value })} className="text-xl font-bold mb-4 text-center border px-2 py-1 rounded mx-auto self-center"/>
+          </div>
+
           <div className="flex overflow-x-auto px-5 gap-4">
             {section.items.map((item,idx)=>(
               <div key={idx} className="flex-shrink-0 w-[260px] border p-2 rounded">
@@ -189,44 +228,78 @@ const handleUpload = async (e, key, sectionIdx = null, itemIdx = null) => {
                 <input value={item.price} onChange={e=>handleItemChange(i,idx,"price",e.target.value)} className="text-center mb-1 border px-1 py-1 rounded w-full"/>
                 <button
   onClick={() => deleteItem(i, idx)}
-  className="text-red-500 mt-2"
+  className="text-red-500 mt-2 cursor-pointer border border-red-500 rounded px-2 py-1 hover:bg-red-500 hover:text-white transition w-full"
 >
-  Delete Item
+  حذف 
 </button>
               </div>
             ))}
-            <button onClick={()=>addItem(i)} className="border border-green-600 text-green-600 px-4 py-2 rounded h-[200px] flex items-center justify-center hover:bg-green-600 hover:text-white transition">+ Add Item</button>
+            <button onClick={()=>addItem(i)} className="border border-green-600 text-green-600 px-4 py-2 rounded min-h-full min-w-[230px] flex items-center justify-center hover:bg-green-600 hover:text-white transition cursor-pointer">+ اضف عنصر</button>
           </div>
         </div>
       ))}
 
       {/* Working Hours */}
       <div className="w-full max-w-md mx-auto p-2">
-        <Disclosure>
-          {({ open }) => (
-            <>
-              <Disclosure.Button className="cursor-pointer flex w-full justify-between bg-white px-4 py-2 text-left text-gray-900 font-medium md:shadow md:rounded-lg focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
-                <span>{translations[lang].workingHours}</span>
-                {open?<ChevronUpIcon className="w-5 h-5 text-gray-500"/>:<ChevronDownIcon className="w-5 h-5 text-gray-500"/>}
-              </Disclosure.Button>
-              <Disclosure.Panel className="bg-white md:shadow md:rounded-lg p-4 mt-2">
-                <ul className="space-y-1 text-gray-700">
-                  {Object.entries(siteData.hours).map(([day,time])=>(
-                    <li key={day} className="flex justify-between">
-                      <span>{translations[lang].days[day]}</span>
-                      <input value={time} onChange={e=>handleChange("hours",{ ...siteData.hours,[day]:e.target.value })} className="border px-1 py-1 rounded w-20 text-right"/>
-                    </li>
-                  ))}
-                </ul>
-              </Disclosure.Panel>
-            </>
-          )}
-        </Disclosure>
-      </div>
+  <div className="bg-white px-4 py-2 text-gray-900 font-medium md:shadow md:rounded-lg">
+    <span>{translations[lang].workingHours}</span>
+  </div>
 
-      <div className="text-center mt-6">
-        <button onClick={handleSave} className="bg-black text-white px-6 py-3 rounded text-lg">Save All Changes</button>
-      </div>
+  <div className="bg-white md:shadow md:rounded-lg p-4 mt-2">
+    <ul className="space-y-1 text-gray-700">
+      {Object.entries(siteData.hours).map(([day, time]) => (
+        <li key={day} className="flex justify-between">
+          <span>{translations[lang].days[day]}</span>
+          <input
+            value={time}
+            onChange={e =>
+              handleChange("hours", {
+                ...siteData.hours,
+                [day]: e.target.value,
+              })
+            }
+            className="border px-1 py-1 rounded w-20 text-left w-[40%]"
+          />
+        </li>
+      ))}
+    </ul>
+  </div>
+</div>
+
+
+
+<div className="flex flex-col items-center gap-4 my-16">
+
+  {/* Template Selector */}
+  <div className="flex flex-col items-center gap-2">
+    <label className="font-semibold">اختر القالب</label>
+
+    <select
+      value={siteData.template}
+      onChange={(e) => handleChange("template", e.target.value)}
+      className="border px-4 py-2 rounded bg-white cursor-pointer"
+    >
+      <option value="template1">Template 1</option>
+      <option value="template2">Template 2</option>
+      <option value="template3">Template 3</option>
+      <option value="template4">Template 4</option>
+      <option value="template5">Template 5</option>
+      <option value="template6">Template 6</option>
+    </select>
+  </div>
+
+  {/* Save Button */}
+  <button
+    onClick={handleSave}
+    className="bg-black text-white px-6 py-3 rounded text-lg cursor-pointer hover:bg-gray-800 transition"
+  >
+    حفظ جميع التغييرات
+  </button>
+
+</div>
+
+
+
     </div>
   );
 }

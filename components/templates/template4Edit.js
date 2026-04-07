@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { FaInstagram, FaFacebook, FaTiktok, FaPhoneAlt } from "react-icons/fa";
 import { RiTimeLine } from "react-icons/ri";
-import { Globe, X } from "lucide-react";
+import { Globe, X, MapPin } from "lucide-react";
 import { Noto_Sans_Arabic } from "next/font/google";
 
 const notoArabic = Noto_Sans_Arabic({
@@ -32,6 +32,7 @@ const translations = {
     terms: "شروط الاستخدام",
     createdBy: "CREATED BY CRTGO, WEB SERVICES ❤️",
     allrights: "جميع الحقوق محفوظة",
+    notAvailable: "غير متوفر",
   },
   he: {
     workingHours: "שעות פתיחה",
@@ -48,6 +49,7 @@ const translations = {
     terms: "תנאי שימוש",
     createdBy: "CREATED BY CRTGO, WEB SERVICES ❤️",
     allrights: "כל הזכויות שמורות",
+    notAvailable: "לא זמין",
   },
 };
 
@@ -140,15 +142,22 @@ export default function Template4Edit({ data, token }) {
   };
 
   // ===== SAVE =====
-  const handleSave = async () => {
-    const res = await fetch("/api/admin/save", {
-      method: "POST",
-      body: JSON.stringify({ token, site_data: siteData }),
-      headers: { "Content-Type": "application/json" },
-    });
-    if (res.ok) alert("Saved!");
-    else alert("Error saving!");
-  };
+const handleSave = async () => {
+  const res = await fetch("/api/admin/save", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token
+    },
+    body: JSON.stringify({ site_data: siteData })
+  });
+
+  if (res.ok) {
+    alert("Saved!");
+  } else {
+    alert("Error saving!");
+  }
+};
 
   // ===== SCROLL =====
   const scrollToSection = (id) => {
@@ -170,25 +179,16 @@ export default function Template4Edit({ data, token }) {
         ))}
       </div>
 
-      {/* LOGO */}
-<div className="flex flex-row items-center justify-around w-full mt-20 mb-15">
-              <label className="bg-black text-white text-xs px-5 py-4 rounded cursor-pointer">
-                Logo Image
-                <input type="file" hidden onChange={(e)=>handleUpload(e,"logo")} />
-              </label>
-      <div className="w-26 h-26 rounded-full overflow-hidden border-2 border-black relative">
-        <Image src={siteData.logo} alt="" fill className="object-cover" />
-
-      </div>
-</div>
 
       {/* CARD */}
       <div className="absolute z-10 top-[190px] left-1/2 -translate-x-1/2 w-[85vw] md:w-[55%] bg-gray-100 rounded-[20px] p-6 text-center">
 
+
+<div className="flex flex-col mx-auto items-center justify-center gap-2 w-[70%]">
         <input
           value={siteData.name[lang]}
           onChange={(e)=>handleChange("name",{...siteData.name,[lang]:e.target.value})}
-          className="text-xl font-bold text-center bg-transparent border-b"
+          className="text-xl font-bold text-center bg-transparent border-b w-full"
         />
 
         <input
@@ -196,12 +196,15 @@ export default function Template4Edit({ data, token }) {
           onChange={(e)=>handleChange("mainDesc",{...siteData.mainDesc,[lang]:e.target.value})}
           className="block w-full text-center mt-2 bg-transparent border-b"
         />
-
+      
+      <div className="flex items-center justify-center gap-2 mt-2 w-full">
         <input
           value={siteData.location[lang]}
           onChange={(e)=>handleChange("location",{...siteData.location,[lang]:e.target.value})}
           className="block w-full text-center mt-2 bg-transparent border-b"
         />
+        <MapPin size={18} />
+      </div>
 
 
       <div className="mt-6 flex flex-row text-black flex-wrap items-center justify-center gap-1">
@@ -212,16 +215,27 @@ export default function Template4Edit({ data, token }) {
         ))}
       </div>
       </div>
+      </div>
 
 
 
+      {/* LOGO */}
+<div className="flex flex-row items-center justify-around w-full mt-32 mb-15">
+              <label className="bg-black text-white text-xs px-5 py-4 rounded cursor-pointer hover:bg-white hover:text-black transition border">
+                تغيير صورة اللوغو
+                <input type="file" hidden onChange={(e)=>handleUpload(e,"logo")} />
+              </label>
+      <div className="w-26 h-26 rounded-full overflow-hidden border-2 border-black relative">
+        <Image src={siteData.logo} alt="" fill className="object-cover" />
 
+      </div>
+</div>
 
     {/* Socials */}
     <div className="my-2 flex flex-wrap items-center justify-center gap-3 mt-3">
       {["instagram","facebook","tiktok","phone"].map(key => (
         <div key={key} className="flex items-center gap-2">
-          <label className="flex items-center gap-1 border border-white rounded px-2 py-1">
+          <label className="flex items-center gap-1 rounded px-2 py-1">
             {key === "instagram" && <FaInstagram />}
             {key === "facebook" && <FaFacebook />}
             {key === "tiktok" && <FaTiktok />}
@@ -244,7 +258,7 @@ export default function Template4Edit({ data, token }) {
         <div className="flex items-center justify-center w-full py-6">
         <button
           onClick={() => setIsOpen(true)}
-          className="flex items-center justify-center rounded-full text-sm cursor-pointer p-2 hover:bg-white hover:text-black transition border font-bold border-gray mb-2"
+          className="flex items-center justify-center rounded-full text-sm cursor-pointer p-2 hover:bg-white hover:text-black transition border font-bold border-gray mb-2 gap-2"
         >
           <RiTimeLine className="text-lg" /> 
           <p className="pl-2 text-sm">{translations[lang].workingHours}</p>
@@ -260,20 +274,20 @@ export default function Template4Edit({ data, token }) {
 
       {/* Hours Modal */}
       <Dialog open={isOpen} onClose={()=>setIsOpen(false)} className="relative z-50000">
-        <div className="fixed inset-0 bg-black/40" />
+        <div className="fixed inset-0 bg-black/50" />
         <div className="fixed inset-0 flex items-center justify-center p-4">
-          <DialogPanel className="bg-[#101820] text-white border border-[#f2aa4c] p-6 rounded-md w-[70vh] md:w-[50vh] min-h-[350px] shadow-lg flex flex-col ">
+          <DialogPanel className="bg-gray-300 text-black border border-[#000] p-6 rounded-md w-[70vh] md:w-[50vh] min-h-[350px] shadow-lg flex flex-col ">
             <DialogTitle className="text-[1.25rem] pb-3 text-right font-bold">{translations[lang].workingHours}</DialogTitle>
-            <ul className="space-y-1 text-gray-700">
+            <ul className="space-y-1 text-black">
               {Object.entries(siteData.hours || {}).map(([day,time])=>(
-                <li key={day} className="flex justify-between text-gray-300">
+                <li key={day} className="flex justify-between text-black">
                   <input value={time} onChange={e=>handleChange('hours',{...siteData.hours,[day]:e.target.value})} className="text-right border px-2 py-1 rounded w-28"/>
                   <span className="font-bold">{translations[lang].days[day]}</span>
                 </li>
               ))}
             </ul>
             <div className="mt-auto flex justify-center">
-              <button onClick={()=>setIsOpen(false)} className="bg-[#f2aa4c] hover:bg-[#fff] hover:text-black border-2 text-black hover:border-[#f2aa4c] px-3 py-1 rounded cursor-pointer transition font-bold">{translations[lang].workingHoursModalClose}</button>
+              <button onClick={()=>setIsOpen(false)} className="bg-[#000] hover:bg-[#fff] hover:text-black border-2 border-black text-white hover:border-[#000] px-3 py-1 rounded cursor-pointer transition font-bold">{translations[lang].workingHoursModalClose}</button>
             </div>
           </DialogPanel>
         </div>
@@ -290,7 +304,7 @@ export default function Template4Edit({ data, token }) {
             <div className="relative w-[120px] h-[120px]">
               <Image src={section.image} alt="" fill className="border border-black object-cover rounded-full" />
               <label className="absolute bottom-1 right-1 bg-black text-white text-xs px-2 py-1 rounded cursor-pointer">
-                Upload
+                تغيير الصورة
                 <input type="file" hidden onChange={(e)=>handleUpload(e,"image",i)} />
               </label>
             </div>
@@ -302,9 +316,14 @@ export default function Template4Edit({ data, token }) {
             />
 
             <button onClick={()=>setActiveSection({section, index:i})} className="cursor-pointer text-sm text-blue-500 hover:text-blue-700 hover:bg-blue-400/50 p-2 rounded">
-              Edit Items
+              تعديل العناصر
             </button>
-            <button onClick={()=>deleteSection(i)} className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white text-sm cursor-pointer rounded">Delete Section</button>
+            <button 
+            onClick={()=>{
+  if (window.confirm("هل أنت متأكد من حذف هذا القسم؟")) {
+    deleteSection(i);
+  }
+}} className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white text-sm cursor-pointer rounded mt-6">حذف القسم</button>
           </div>
         ))}
       </div>
@@ -337,8 +356,8 @@ export default function Template4Edit({ data, token }) {
             <div className="relative w-30 h-30">
             {/* ✅ UNAVAILABLE OVERLAY */}
             {!item.available && (
-              <div className="absolute inset-0 break-normal bg-black/60 flex items-center justify-center text-white text-sm text-center font-bold z-20 pointer-events-none rounded">
-                Not Available
+              <div className="absolute inset-0 break-normal bg-black/60 flex items-center justify-center text-white text-lg text-center font-bold z-20 pointer-events-none rounded">
+                {translations[lang].notAvailable}
               </div>
             )}
               <Image
@@ -358,7 +377,7 @@ export default function Template4Edit({ data, token }) {
               )}
 
               <label className="absolute bottom-1 right-1 bg-black text-white text-xs p-2 rounded cursor-pointer">
-                + upload
+                + تغيير الصورة
                 <input
                   type="file"
                   hidden
@@ -417,7 +436,7 @@ export default function Template4Edit({ data, token }) {
                       handleItemChange(activeSection.index, idx, "spicy", e.target.checked)
                     }
                   />
-                  <span>Spicy</span>
+                  <span>حار</span>
                 </label>
 
                 {/* AVAILABLE */}
@@ -429,17 +448,22 @@ export default function Template4Edit({ data, token }) {
                       handleItemChange(activeSection.index, idx, "available", e.target.checked)
                     }
                   />
-                  <span>Available</span>
+                  <span>متوفر</span>
                 </label>
 
               </div>
 
               {/* DELETE */}
               <button
-                onClick={() => deleteItem(activeSection.index, idx)}
-                className="cursor-pointer text-red-500 text-sm hover:bg-red-500 hover:text-white transition py-2 px-4 rounded w-full border border-red-500 mt-2"
+
+onClick={()=>{
+  if (window.confirm("هل أنت متأكد من حذف هذا العنصر؟")) {
+    deleteItem(activeSection.index, idx);
+  }
+}}  
+className="cursor-pointer text-black font-bold text-sm hover:bg-red-500 hover:text-white transition py-2 px-4 rounded w-full border border-red-500 mt-2"
               >
-                Delete Item
+                حذف العنصر
               </button>
 
             </div>
@@ -452,28 +476,55 @@ export default function Template4Edit({ data, token }) {
           onClick={() => addItem(activeSection.index)}
           className="px-4 py-2 bg-green-600 text-white rounded"
         >
-          + Add Item
+          + إضافة عنصر
         </button>
       </div>
 
       {/* CLOSE */}
       <button
         onClick={() => setActiveSection(null)}
-        className="fixed cursor-pointer bottom-0 left-0 w-full bg-black text-white px-4 py-5 hover:bg-white hover:text-black border-t-2 border-black"
+        className="fixed cursor-pointer font-bold bottom-0 left-0 w-full bg-black text-white px-4 py-5 hover:bg-white hover:text-black border-t-2 border-black"
       >
-        Close
+        اغلاق
       </button>
 
     </DialogPanel>
   </div>
 </Dialog>
 
-      {/* SAVE */}
-<div className="flex flex-col items-center justify-center w-full max-w-md p-5 mx-auto my-15">
-    <button onClick={addSection} className="mb-25 cursor-pointer border border-green-600 text-green-600 rounded px-4 py-2 hover:bg-green-600 hover:text-white transition">+ Add Section</button>
-    <button onClick={handleSave} className="px-3 py-1 bg-[#000] rounded cursor-pointer text-white mt-2 hover:bg-white hover:text-black border-2 border-[#000]">Save</button>
-</div>
+
+<div className="flex flex-col items-center gap-4 mt-25 mb-10">
+    <button onClick={addSection} className="cursor-pointer border border-green-600 text-green-600 rounded px-4 py-2 hover:bg-green-600 hover:text-white transition mb-12">+ إضافة قسم</button>
+
+  {/* Template Selector */}
+  <div className="flex flex-col items-center gap-2">
+    <label className="font-semibold">اختر القالب</label>
+
+    <select
+      value={siteData.template}
+      onChange={(e) => handleChange("template", e.target.value)}
+      className="border px-4 py-2 rounded bg-white cursor-pointer text-black text-center"
+    >
+      <option value="template1">Template 1</option>
+      <option value="template2">Template 2</option>
+      <option value="template3">Template 3</option>
+      <option value="template4">Template 4</option>
+      <option value="template5">Template 5</option>
+      <option value="template6">Template 6</option>
+    </select>
+  </div>
+
+  {/* Save Button */}
+  <button
+    onClick={handleSave}
+    className="bg-black text-white px-6 py-3 rounded text-lg cursor-pointer hover:bg-gray-800 transition"
+  >
+    حفظ جميع التغييرات
+  </button>
 
 </div>
+</div>
+
+
   );
 }

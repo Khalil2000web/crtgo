@@ -8,7 +8,6 @@ import Script from "next/script";
 import { FaInstagram, FaFacebook, FaTiktok, FaPhoneAlt } from "react-icons/fa";
 import { RiTimeLine } from "react-icons/ri";
 
-import { Menu } from "@headlessui/react";
 import { Globe } from 'lucide-react';
 
 import { Noto_Sans_Arabic } from "next/font/google";
@@ -35,6 +34,7 @@ const translations = {
     terms: "شروط الاستخدام",
     createdBy: "CREATED BY CRTGO, WEB SERVICES ❤️",
     allrights: "جميع الحقوق محفوظة",
+    notAvailable: "غير متوفر",
   },
   he: {
     workingHours: "שעות פתיחה",
@@ -51,6 +51,7 @@ const translations = {
     terms: "תנאי שימוש",
     createdBy: "CREATED BY CRTGO, WEB SERVICES ❤️",
     allrights: "כל הזכויות שמורות",
+    notAvailable: "לא זמין",
   },
 };
 
@@ -66,6 +67,8 @@ const [isOpen, setIsOpen] = useState(false)
 const [selectedItem, setSelectedItem] = useState(null)
 const [openIndex, setOpenIndex] = useState([]);
 const [langMenuOpen, setLangMenuOpen] = useState(false);
+
+const headerImages = data.templateConfig?.template3?.headerImages || [];
 
  const isRTL = lang === 'ar' || lang === 'he';
 
@@ -148,7 +151,7 @@ return (
 
 <div dir="ltr" className="overflow-hidden w-full h-[320px] relative mb-6">
   <div className="flex w-max animate-header-scroll absolute">
-    {[...data.headerImages, ...data.headerImages].map((src, i) => (
+    {[...headerImages, ...headerImages].map((src, i) => (
       <div key={i} className="flex-none w-[350px] h-[320px] relative">
         <Image src={src} alt="" fill className="pointer-events-none block object-cover" />
       </div>
@@ -344,7 +347,7 @@ return (
     {/* Overlay */}
     {!item.available && (
       <div className="absolute inset-0 bg-black/60 flex rounded-md items-center justify-center text-white text-lg font-bold z-[300]">
-        Not Available
+        {translations[lang].notAvailable}
       </div>
     )}
 

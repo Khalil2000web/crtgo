@@ -8,7 +8,7 @@ import Script from "next/script";
 import { FaInstagram, FaFacebook, FaTiktok, FaPhoneAlt } from "react-icons/fa";
 import { RiTimeLine } from "react-icons/ri";
 import { Globe } from 'lucide-react';
-import { X } from "lucide-react";
+import { X, MapPin } from "lucide-react";
 import { Noto_Sans_Arabic } from "next/font/google";
 
 const notoArabic = Noto_Sans_Arabic({
@@ -33,6 +33,7 @@ const translations = {
     terms: "شروط الاستخدام",
     createdBy: "CREATED BY CRTGO, WEB SERVICES ❤️",
     allrights: "جميع الحقوق محفوظة",
+    notAvailable: "غير متوفر",
   },
   he: {
     workingHours: "שעות פתיחה",
@@ -49,6 +50,7 @@ const translations = {
     terms: "תנאי שימוש",
     createdBy: "CREATED BY CRTGO, WEB SERVICES ❤️",
     allrights: "כל הזכויות שמורות",
+    notAvailable: "לא זמין",
   },
 };
 
@@ -122,7 +124,7 @@ return (
 <div className="absolute z-10 h-[230px] top-[160px] left-1/2 -translate-x-1/2 flex flex-col pt-7 w-[85vw] md:w-[55%] bg-gray-100 border border-gray-300 rounded-[20px] items-center shadow-lg">
   <h1 className="text-xl text-[#000] font-bold pt-7">{data.name[lang]}</h1>
   <p className="text-sm text-gray-600 mt-1">{data.mainDesc[lang]}</p>
-  <p className="text-sm text-gray-600 mt-1">{data.location[lang]}</p>
+  <p className="flex gap-2 items-center justify-center text-sm text-gray-600 mt-1"><MapPin size={18} />{data.location[lang]}</p>
 
   <div className="flex items-center justify-between flex-row w-full px-[10px] mt-8">
 
@@ -288,7 +290,14 @@ return (
         <div className="flex-1 overflow-y-auto p-4 pb-18 flex flex-col gap-6">
 
           {activeSection.items.map((item, idx) => (
-            <div key={idx} className="flex justify-between items-start gap-4">
+
+            
+            <div key={idx} className="flex justify-between items-start gap-4 relative">
+                  {!item.available && (
+      <div className="absolute inset-0 bg-black/60 flex rounded-md items-center justify-center text-white text-lg font-bold z-[300]">
+        {translations[lang].notAvailable}
+      </div>)}
+    
               {/* Image */}
               <div className="relative w-[110px] h-[110px] flex-shrink-0">
                 <Image
@@ -311,11 +320,11 @@ return (
                 <p className="text-sm text-gray-900">
                   {item.desc[lang]}
                 </p>
+              
               </div>
-
-            </div>
+            </div>      
+              
           ))}
-
         </div>
 
         {/* 🔸 Bottom fixed bar */}

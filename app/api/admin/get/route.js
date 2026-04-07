@@ -1,18 +1,19 @@
 import { supabase } from "@/lib/supabase"
+import jwt from "jsonwebtoken"
 
 export async function GET(req) {
   const { searchParams } = new URL(req.url)
-  const token = searchParams.get("token")
+  const token = req.headers.get("authorization")
   const restaurant = searchParams.get("restaurant")
 
   if (!token || !restaurant) return new Response("Missing token or restaurant", { status: 400 })
 
   let decoded
-  try {
-    decoded = JSON.parse(Buffer.from(token, "base64").toString("utf-8"))
-  } catch {
-    return new Response("Invalid token", { status: 401 })
-  }
+try {
+  decoded = jwt.verify(token, process.env.JWT_SECRET)
+} catch {
+  return new Response("Invalid token", { status: 401 })
+}
 
   // Get restaurant by slug
 const { data: restaurantData, error: restError } = await supabase

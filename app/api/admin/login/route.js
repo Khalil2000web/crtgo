@@ -1,5 +1,6 @@
 import { supabase } from "@/lib/supabase"
 import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
 
 export async function POST(req) {
 
@@ -36,12 +37,16 @@ export async function POST(req) {
   }
 
   // 🔹 Step 3: create token with REAL ID
-  const token = Buffer.from(
-    JSON.stringify({
-      adminId: admin.id,
-      restaurantId: restaurantData.id
-    })
-  ).toString("base64")
+// after password match:
 
-  return new Response(JSON.stringify({ token }), { status: 200 })
+const token = jwt.sign(
+  {
+    adminId: admin.id,
+    restaurantId: restaurantData.id
+  },
+  process.env.JWT_SECRET,
+  { expiresIn: "3 d" }
+)
+
+return new Response(JSON.stringify({ token }), { status: 200 })
 }

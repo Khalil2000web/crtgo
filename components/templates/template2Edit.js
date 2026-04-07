@@ -49,14 +49,22 @@ const translations = {
 };
 
 export default function Template2Edit({ data, token }) {
-  const [siteData, setSiteData] = useState({ ...data, sections: data.sections || [] });
-  const [mounted, setMounted] = useState(false);
-  const [lang, setLang] = useState("ar");
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
+const [siteData, setSiteData] = useState({ ...data, sections: data.sections || [] });
+const [mounted, setMounted] = useState(false);
+const [lang, setLang] = useState("ar");
+const [isOpen, setIsOpen] = useState(false);
+const [selectedItem, setSelectedItem] = useState(null);
 
-  useEffect(() => setMounted(true), []);
-  if (!mounted) return null;
+useEffect(() => {
+  setMounted(true);
+}, []);
+
+
+
+if (!mounted) return null;
+
+
+  
 
   // ===== BASIC CHANGE =====
   const handleChange = (key, value) => setSiteData(prev => ({ ...prev, [key]: value }));
@@ -79,7 +87,14 @@ export default function Template2Edit({ data, token }) {
     const formData = new FormData();
     formData.append("file", file);
 
-    const res = await fetch("/api/admin/upload", { method: "POST", body: formData });
+    const res = await fetch("/api/admin/upload", {
+  method: "POST",
+  headers: {
+    Authorization: token
+  },
+  body: formData
+});
+
     const d = await res.json();
 
     if (sectionIdx !== null && itemIdx !== null) {
@@ -130,15 +145,25 @@ const addItem = (sectionIdx) => {
   };
 
   // ===== SAVE =====
-  const handleSave = async () => {
-    const res = await fetch("/api/admin/save", {
-      method: "POST",
-      body: JSON.stringify({ token, site_data: siteData }),
-      headers: { "Content-Type": "application/json" },
-    });
-    if (res.ok) alert("Saved!");
-    else alert("Error saving!");
-  };
+const handleSave = async () => {
+  const res = await fetch("/api/admin/save", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token
+    },
+    body: JSON.stringify({ site_data: siteData })
+  });
+
+  if (res.ok) {
+    alert("Saved!");
+
+    // reload AFTER saving (so new template is loaded)
+    window.location.reload();
+  } else {
+    alert("Error saving!");
+  }
+};
 
   const scrollToSection = (id) => {
     const el = document.getElementById(id);
@@ -161,7 +186,7 @@ const addItem = (sectionIdx) => {
   {/* Header Upload Button */}
   <div className="absolute bottom-3 right-3 z-[500]">
     <label className="cursor-pointer bg-black/60 text-white px-3 py-1 rounded text-sm">
-      Change Header
+      تغيير صورة الخلفية
       <input
         type="file"
         className="hidden"
@@ -189,7 +214,7 @@ const addItem = (sectionIdx) => {
 
       {/* Logo Upload Button */}
       <label className="cursor-pointer bg-black/60 text-white px-3 py-1 rounded text-sm">
-        Change Logo
+        تغيير الشعار
         <input
           type="file"
           className="hidden"
@@ -281,10 +306,10 @@ const addItem = (sectionIdx) => {
             {/* Section image upload */}
             <input type="file" className="absolute inset-0 opacity-0 cursor-pointer" onChange={e=>handleUpload(e,"image",i)} />
 
-            <button onClick={()=>deleteSection(i)} className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-5 h-5 text-xs">×</button>
+            <button onClick={()=>deleteSection(i)} className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-8 h-8 text-xl cursor-pointer">×</button>
           </div>
         ))}
-        <button onClick={addSection} className="cursor-pointer border border-green-600 text-green-600 rounded px-4 py-2 hover:bg-green-600 hover:text-white transition">+ Add Section</button>
+        <button onClick={addSection} className="cursor-pointer border border-green-600 text-green-600 rounded px-4 py-2 hover:bg-green-600 hover:text-white transition">+ اضافة قسم</button>
       </div>
 
       {/* Sections */}
@@ -295,18 +320,23 @@ const addItem = (sectionIdx) => {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 px-5">
             {section.items.map((item,idx) => (
               <div key={idx} className="relative">
-                <button onClick={()=>setSelectedItem(item)} className="w-full text-left cursor-pointer">
+                <button onClick={()=>setSelectedItem(item)} className="w-full text-left">
                   <div className="relative w-full aspect-square overflow-hidden rounded-lg border-3 border-black bg-gray-200">
-                    {item.img && <Image src={item.img} alt={item.name[lang]} fill className="object-cover" />}
                     
+                    <label className="absolute top-2 right-2 bg-black/70 text-white text-[12px] px-2 py-1 rounded cursor-pointer z-[10]">
+                      تغيير الصورة
+                      <input type="file" className="hidden" onChange={e=>handleUpload(e,"img",i,idx)} />
+                    {item.img && <Image src={item.img} alt={item.name[lang]} fill className="object-cover" />}
+                    <input type="file" className="absolute inset-0 opacity-10 text-black cursor-pointer" onChange={e=>handleUpload(e,"img",i,idx)} />
+</label>
+
             {!item.available && (
     <div className="absolute inset-0 bg-black/60 flex items-center justify-center text-white text-lg font-bold z-20 pointer-events-none">
-      Not Available
+      غير متوفر
     </div>
   )}
                     
                     
-                    <input type="file" className="absolute inset-0 opacity-10 text-black cursor-pointer" onChange={e=>handleUpload(e,"img",i,idx)} />
                     <div className="absolute bottom-0 left-0 right-0 bg-black/70 text-white text-sm flex justify-between items-center px-3 py-2 h-[40px]">
                       <span className="font-bold flex flex-row items-center justify-center gap-2">{item.name[lang]}
                         {item.spicy && (
@@ -324,28 +354,30 @@ const addItem = (sectionIdx) => {
 
                 <textarea value={item.desc[lang]} onChange={e=>handleItemChange(i,idx,"desc",{ ...item.desc,[lang]:e.target.value })} className="text-sm text-center mb-1 border px-1 py-1 rounded w-full"/>
                 <input value={item.price} onChange={e=>handleItemChange(i,idx,"price",e.target.value)} className="text-center mb-1 border px-1 py-1 rounded w-full"/>
-                <button onClick={()=>deleteItem(i,idx)} className="cursor-pointer text-red-500 text-center hover:bg-red-500 hover:text-white transition py-2 px-4 rounded w-full border border-red-500">Delete Item</button>
+                <button onClick={()=>deleteItem(i,idx)} className="cursor-pointer text-red-500 text-center hover:bg-red-500 hover:text-white transition py-2 px-4 rounded w-full border border-red-500 mb-2">حذف العنصر</button>
               <div className="flex items-center justify-between mb-1">
   <label className="flex items-center gap-2">
-    <input 
+    <input
+    className="cursor-pointer w-4 h-4"
       type="checkbox" 
       checked={item.spicy || false} 
       onChange={e => handleItemChange(i, idx, "spicy", e.target.checked)} 
     />
-    <span>Spicy</span>
+    <span>حار</span>
   </label>
     <label className="flex items-center gap-2">
-    <input 
+    <input
+    className="cursor-pointer w-4 h-4"
       type="checkbox" 
       checked={item.available ?? true} 
       onChange={e => handleItemChange(i, idx, "available", e.target.checked)} 
     />
-    <span>Available</span>
+    <span>متوفر</span>
   </label>
 </div>
               </div>
             ))}
-            <button onClick={()=>addItem(i)} className="cursor-pointer border border-green-600 text-green-600 px-4 py-4 rounded h-[200px] min-w-[200px] w-full flex items-center justify-center hover:bg-green-600 hover:text-white transition">+ Add Item</button>
+            <button onClick={()=>addItem(i)} className="cursor-pointer border border-green-600 text-green-600 px-4 py-4 rounded h-[200px] min-w-[200px] w-full flex items-center justify-center hover:bg-green-600 hover:text-white transition">+ اضافة عنصر</button>
           </div>
         </div>
       ))}
@@ -392,9 +424,35 @@ const addItem = (sectionIdx) => {
         </div>
       </Dialog>
 
-      <div className="text-center my-15">
-        <button onClick={handleSave} className="cursor-pointer bg-black text-white hover:bg-gray-800 px-6 py-3 rounded text-lg">Save All Changes</button>
-      </div>
+<div className="flex flex-col items-center gap-4 my-16">
+
+  {/* Template Selector */}
+  <div className="flex flex-col items-center gap-2">
+    <label className="font-semibold">اختر القالب</label>
+
+    <select
+      value={siteData.template}
+      onChange={(e) => handleChange("template", e.target.value)}
+      className="border px-4 py-2 rounded bg-white cursor-pointer"
+    >
+      <option value="template1">Template 1</option>
+      <option value="template2">Template 2</option>
+      <option value="template3">Template 3</option>
+      <option value="template4">Template 4</option>
+      <option value="template5">Template 5</option>
+      <option value="template6">Template 6</option>
+    </select>
+  </div>
+
+  {/* Save Button */}
+  <button
+    onClick={handleSave}
+    className="bg-black text-white px-6 py-3 rounded text-lg cursor-pointer hover:bg-gray-800 transition"
+  >
+    حفظ جميع التغييرات
+  </button>
+
+</div>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { createClient } from "next-sanity";
+import jwt from "jsonwebtoken"
 
 const client = createClient({
   projectId: process.env.SANITY_PROJECT_ID, // use private env
@@ -8,7 +9,18 @@ const client = createClient({
   useCdn: false,
 });
 
+
 export const POST = async (req) => {
+const token = req.headers.get("authorization")
+
+if (!token) return new Response("Unauthorized", { status: 401 })
+
+try {
+  jwt.verify(token, process.env.JWT_SECRET)
+} catch {
+  return new Response("Invalid token", { status: 401 })
+}
+
   try {
     const formData = await req.formData();
     const file = formData.get("file");
